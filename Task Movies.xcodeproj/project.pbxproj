@@ -7,25 +7,41 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A89D3EC82C5A6ACA00367B0F /* UIView+UseAutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3EC72C5A6ACA00367B0F /* UIView+UseAutoLayout.swift */; };
+		A89D3ECA2C5A6B0500367B0F /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3EC92C5A6B0500367B0F /* MovieCell.swift */; };
+		A89D3ECC2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3ECB2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift */; };
+		A89D3ECE2C5A6D7200367B0F /* UILabel+font.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3ECD2C5A6D7200367B0F /* UILabel+font.swift */; };
+		A89D3ED02C5A6DFE00367B0F /* UIColor+Placeholder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3ECF2C5A6DFE00367B0F /* UIColor+Placeholder.swift */; };
 		A8D9443E2C5A447900580A93 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D9443D2C5A447900580A93 /* AppDelegate.swift */; };
 		A8D944402C5A447900580A93 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D9443F2C5A447900580A93 /* SceneDelegate.swift */; };
-		A8D944422C5A447900580A93 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D944412C5A447900580A93 /* ViewController.swift */; };
-		A8D944452C5A447900580A93 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = A8D944442C5A447900580A93 /* Base */; };
+		A8D944422C5A447900580A93 /* MovieListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D944412C5A447900580A93 /* MovieListViewController.swift */; };
 		A8D944482C5A447900580A93 /* Task_Movies.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = A8D944462C5A447900580A93 /* Task_Movies.xcdatamodeld */; };
 		A8D9444A2C5A447B00580A93 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8D944492C5A447B00580A93 /* Assets.xcassets */; };
 		A8D9444D2C5A447B00580A93 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = A8D9444C2C5A447B00580A93 /* Base */; };
+		A8D944572C5A655400580A93 /* MovieListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D944562C5A655400580A93 /* MovieListView.swift */; };
+		A8D944592C5A656C00580A93 /* MovieListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8D944582C5A656C00580A93 /* MovieListViewModel.swift */; };
+		A8D9445C2C5A65ED00580A93 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = A8D9445B2C5A65ED00580A93 /* Alamofire */; };
+		A8D944612C5A665A00580A93 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = A8D944602C5A665A00580A93 /* Kingfisher */; };
+		A8D944642C5A668400580A93 /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = A8D944632C5A668400580A93 /* RxCocoa */; };
+		A8D944682C5A668400580A93 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = A8D944672C5A668400580A93 /* RxSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A89D3EC72C5A6ACA00367B0F /* UIView+UseAutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+UseAutoLayout.swift"; sourceTree = "<group>"; };
+		A89D3EC92C5A6B0500367B0F /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
+		A89D3ECB2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+constraintToMatchParent.swift"; sourceTree = "<group>"; };
+		A89D3ECD2C5A6D7200367B0F /* UILabel+font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UILabel+font.swift"; sourceTree = "<group>"; };
+		A89D3ECF2C5A6DFE00367B0F /* UIColor+Placeholder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Placeholder.swift"; sourceTree = "<group>"; };
 		A8D9443A2C5A447900580A93 /* Task Movies.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Task Movies.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8D9443D2C5A447900580A93 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A8D9443F2C5A447900580A93 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		A8D944412C5A447900580A93 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		A8D944442C5A447900580A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A8D944412C5A447900580A93 /* MovieListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewController.swift; sourceTree = "<group>"; };
 		A8D944472C5A447900580A93 /* Task_Movies.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Task_Movies.xcdatamodel; sourceTree = "<group>"; };
 		A8D944492C5A447B00580A93 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8D9444C2C5A447B00580A93 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A8D9444E2C5A447B00580A93 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A8D944562C5A655400580A93 /* MovieListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListView.swift; sourceTree = "<group>"; };
+		A8D944582C5A656C00580A93 /* MovieListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieListViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,12 +49,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A8D944682C5A668400580A93 /* RxSwift in Frameworks */,
+				A8D944612C5A665A00580A93 /* Kingfisher in Frameworks */,
+				A8D9445C2C5A65ED00580A93 /* Alamofire in Frameworks */,
+				A8D944642C5A668400580A93 /* RxCocoa in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A89D3EC62C5A6AA300367B0F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				A89D3EC72C5A6ACA00367B0F /* UIView+UseAutoLayout.swift */,
+				A89D3ECB2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift */,
+				A89D3ECD2C5A6D7200367B0F /* UILabel+font.swift */,
+				A89D3ECF2C5A6DFE00367B0F /* UIColor+Placeholder.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		A8D944312C5A447900580A93 = {
 			isa = PBXGroup;
 			children = (
@@ -58,16 +89,35 @@
 		A8D9443C2C5A447900580A93 /* Task Movies */ = {
 			isa = PBXGroup;
 			children = (
-				A8D9443D2C5A447900580A93 /* AppDelegate.swift */,
-				A8D9443F2C5A447900580A93 /* SceneDelegate.swift */,
-				A8D944412C5A447900580A93 /* ViewController.swift */,
-				A8D944432C5A447900580A93 /* Main.storyboard */,
-				A8D944492C5A447B00580A93 /* Assets.xcassets */,
-				A8D9444B2C5A447B00580A93 /* LaunchScreen.storyboard */,
-				A8D9444E2C5A447B00580A93 /* Info.plist */,
-				A8D944462C5A447900580A93 /* Task_Movies.xcdatamodeld */,
+				A8D944542C5A620D00580A93 /* App */,
+				A89D3EC62C5A6AA300367B0F /* Extensions */,
+				A8D944552C5A64DF00580A93 /* MovieList */,
 			);
 			path = "Task Movies";
+			sourceTree = "<group>";
+		};
+		A8D944542C5A620D00580A93 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				A8D9444E2C5A447B00580A93 /* Info.plist */,
+				A8D9443D2C5A447900580A93 /* AppDelegate.swift */,
+				A8D9443F2C5A447900580A93 /* SceneDelegate.swift */,
+				A8D944492C5A447B00580A93 /* Assets.xcassets */,
+				A8D9444B2C5A447B00580A93 /* LaunchScreen.storyboard */,
+				A8D944462C5A447900580A93 /* Task_Movies.xcdatamodeld */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		A8D944552C5A64DF00580A93 /* MovieList */ = {
+			isa = PBXGroup;
+			children = (
+				A8D944412C5A447900580A93 /* MovieListViewController.swift */,
+				A8D944562C5A655400580A93 /* MovieListView.swift */,
+				A8D944582C5A656C00580A93 /* MovieListViewModel.swift */,
+				A89D3EC92C5A6B0500367B0F /* MovieCell.swift */,
+			);
+			path = MovieList;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -86,6 +136,12 @@
 			dependencies = (
 			);
 			name = "Task Movies";
+			packageProductDependencies = (
+				A8D9445B2C5A65ED00580A93 /* Alamofire */,
+				A8D944602C5A665A00580A93 /* Kingfisher */,
+				A8D944632C5A668400580A93 /* RxCocoa */,
+				A8D944672C5A668400580A93 /* RxSwift */,
+			);
 			productName = "Task Movies";
 			productReference = A8D9443A2C5A447900580A93 /* Task Movies.app */;
 			productType = "com.apple.product-type.application";
@@ -114,6 +170,11 @@
 				Base,
 			);
 			mainGroup = A8D944312C5A447900580A93;
+			packageReferences = (
+				A8D9445A2C5A65ED00580A93 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				A8D9445F2C5A665A00580A93 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				A8D944622C5A668400580A93 /* XCRemoteSwiftPackageReference "RxSwift" */,
+			);
 			productRefGroup = A8D9443B2C5A447900580A93 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -130,7 +191,6 @@
 			files = (
 				A8D9444A2C5A447B00580A93 /* Assets.xcassets in Resources */,
 				A8D9444D2C5A447B00580A93 /* Base in Resources */,
-				A8D944452C5A447900580A93 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -141,24 +201,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A8D944422C5A447900580A93 /* ViewController.swift in Sources */,
+				A8D944422C5A447900580A93 /* MovieListViewController.swift in Sources */,
 				A8D944482C5A447900580A93 /* Task_Movies.xcdatamodeld in Sources */,
+				A89D3ED02C5A6DFE00367B0F /* UIColor+Placeholder.swift in Sources */,
+				A89D3ECC2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift in Sources */,
+				A89D3ECE2C5A6D7200367B0F /* UILabel+font.swift in Sources */,
+				A89D3ECA2C5A6B0500367B0F /* MovieCell.swift in Sources */,
+				A8D944572C5A655400580A93 /* MovieListView.swift in Sources */,
 				A8D9443E2C5A447900580A93 /* AppDelegate.swift in Sources */,
 				A8D944402C5A447900580A93 /* SceneDelegate.swift in Sources */,
+				A89D3EC82C5A6ACA00367B0F /* UIView+UseAutoLayout.swift in Sources */,
+				A8D944592C5A656C00580A93 /* MovieListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		A8D944432C5A447900580A93 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				A8D944442C5A447900580A93 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		A8D9444B2C5A447B00580A93 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -298,12 +357,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HM9C9Z2Z8T;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Task Movies/Info.plist";
+				INFOPLIST_FILE = "Task Movies/App/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -326,12 +386,13 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = HM9C9Z2Z8T;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Task Movies/Info.plist";
+				INFOPLIST_FILE = "Task Movies/App/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				INFOPLIST_KEY_UIMainStoryboardFile = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -355,7 +416,7 @@
 				A8D944502C5A447B00580A93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		A8D944512C5A447B00580A93 /* Build configuration list for PBXNativeTarget "Task Movies" */ = {
 			isa = XCConfigurationList;
@@ -364,9 +425,59 @@
 				A8D944532C5A447B00580A93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A8D9445A2C5A65ED00580A93 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		A8D9445F2C5A665A00580A93 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.12.0;
+			};
+		};
+		A8D944622C5A668400580A93 /* XCRemoteSwiftPackageReference "RxSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A8D9445B2C5A65ED00580A93 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D9445A2C5A65ED00580A93 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		A8D944602C5A665A00580A93 /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D9445F2C5A665A00580A93 /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+		A8D944632C5A668400580A93 /* RxCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D944622C5A668400580A93 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxCocoa;
+		};
+		A8D944672C5A668400580A93 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A8D944622C5A668400580A93 /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		A8D944462C5A447900580A93 /* Task_Movies.xcdatamodeld */ = {
