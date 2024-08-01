@@ -14,7 +14,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
-        window.rootViewController = MovieListViewController(viewModel: MovieListViewModel())
+        window.rootViewController = MovieListViewController(
+            viewModel: MovieListViewModel(
+                movieRepository: MovieRepository(
+                    coreDataRepository: MovieCoreDataRepository(),
+                    paginationRepository: MoviePaginationRepository(
+                        paginationFactory: PaginationFactory<MovieResponse>(
+                            networkService: NetworkService<MovieResponse>(
+                                jsonMapper: JSONMapper<MovieResponse>()))),
+                    networkMonitor: NetworkMonitor()),
+                uiMovieMapper: UIMovieMapper()))
         self.window = window
         window.makeKeyAndVisible()
     }
