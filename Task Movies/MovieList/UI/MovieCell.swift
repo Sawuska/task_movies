@@ -15,28 +15,29 @@ final class MovieCell: UITableViewCell {
     private static let infoHorizontalInset: CGFloat = 20
     private static let titleTopInset: CGFloat = 30
     private static let genresBottomInset: CGFloat = 40
-    private static let titleFontSize: CGFloat = 24
-    private static let secondaryFontSize: CGFloat = 18
+    private static let titleFontSize: CGFloat = 28
+    private static let secondaryFontSize: CGFloat = 20
     private static let heightToWidth: CGFloat = 0.7
 
     private let titleAndYear: UILabel = {
-        @UseAutoLayout var label = UILabel(withBoldFontOfSize: titleFontSize)
-        label.textColor = .white
+        @UseAutoLayout var label = UILabel()
         label.numberOfLines = 4
+        applyShadow(to: label)
         return label
     }()
 
     private let genres: UILabel = {
-        @UseAutoLayout var label = UILabel(withSystemFontOfSize: secondaryFontSize)
+        @UseAutoLayout var label = UILabel()
         label.textAlignment = .left
-        label.textColor = .white
+        label.numberOfLines = 4
+        applyShadow(to: label)
         return label
     }()
 
     private let rating: UILabel = {
-        @UseAutoLayout var label = UILabel(withSystemFontOfSize: secondaryFontSize)
+        @UseAutoLayout var label = UILabel()
         label.textAlignment = .right
-        label.textColor = .white
+        applyShadow(to: label)
         return label
     }()
 
@@ -111,10 +112,10 @@ final class MovieCell: UITableViewCell {
     }
 
     func updateInfo(for movie: MovieUIModel) {
-        titleAndYear.text = movie.titleAndYear
-        genres.text = movie.genres
-        rating.text = movie.rating
-        
+        setAttributedText(movie.titleAndYear, to: titleAndYear, fontSize: MovieCell.titleFontSize)
+        setAttributedText(movie.genres, to: genres, fontSize: MovieCell.secondaryFontSize)
+        setAttributedText(movie.rating, to: rating, fontSize: MovieCell.secondaryFontSize)
+
         poster.kf.setImage(
             with: movie.posterURL,
             placeholder: UIColor.lightGray,
@@ -122,7 +123,27 @@ final class MovieCell: UITableViewCell {
         )
     }
 
+    private func setAttributedText(_ string: String, to label: UILabel, fontSize: CGFloat) {
+        guard let font = UIFont(name: "Avenir Black", size: fontSize) else { return }
+        let text = NSAttributedString(
+            string: string,
+            attributes: [
+                .font : font,
+                .strokeColor : UIColor.black,
+                .strokeWidth : -1,
+                .foregroundColor : UIColor.white
+            ])
+        label.attributedText = text
+    }
+
     static func getCellHeight(for width: CGFloat) -> CGFloat {
         width * heightToWidth
+    }
+
+    private static func applyShadow(to label: UILabel) {
+        label.layer.shadowColor = UIColor.black.cgColor
+        label.layer.shadowOffset = .zero
+        label.layer.shadowOpacity = 1
+        label.layer.shadowRadius = 10
     }
 }

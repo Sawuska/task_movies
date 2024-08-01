@@ -33,11 +33,17 @@ final class MovieListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpNavigationBar()
+
         contentView.moviesTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         contentView.moviesTableView.contentInset = UIEdgeInsets(top: MovieListView.tableViewInset, left: .zero, bottom: MovieListView.tableViewInset, right: .zero)
 
         setObserver()
+    }
+
+    private func setUpNavigationBar() {
+        navigationItem.title = "Popular Movies"
     }
 
     private func setObserver() {
