@@ -14,10 +14,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
+        let managedObjContext = AppDelegate().persistentContainer.viewContext
         let mainVC = MovieListViewController(
             viewModel: MovieListViewModel(
                 movieRepository: MovieRepository(
-                    coreDataRepository: MovieCoreDataRepository(),
+                    coreDataRepository: MovieCoreDataRepository(
+                        managedObjContext: managedObjContext),
                     paginationRepository: MoviePaginationRepository(
                         paginationFactory: PaginationFactory<MovieResponse>(
                             networkService: NetworkService<MovieResponse>(

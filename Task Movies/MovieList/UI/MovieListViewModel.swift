@@ -22,11 +22,11 @@ final class MovieListViewModel {
         movieRepository
             .observe()
             .map { movies in
-                self.uiMovieMapper.mapToUI(movies: movies)
+                self.uiMovieMapper.mapEntitiesToUI(movies: movies)
             }
     }
 
-    func getNextPage(for sort: MovieSortType) {
-        movieRepository.loadNextPage(for: sort)
+    func getNextPage() {
+        movieRepository.loadNextPage()
     }
 }

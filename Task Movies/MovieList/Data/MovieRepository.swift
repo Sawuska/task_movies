@@ -10,6 +10,8 @@ import RxSwift
 
 final class MovieRepository {
 
+    private let sortSubject = BehaviorSubject<MovieSortType>(value: .popularityDescending)
+
     private let coreDataRepository: MovieCoreDataRepository
     private let paginationRepository: MoviePaginationRepository
 
@@ -24,21 +26,32 @@ final class MovieRepository {
         self.networkMonitor = networkMonitor
     }
 
-    func observe(for sort: MovieSortType = .popularityDescending) -> Observable<[Movie]> {
+    func observe() -> Observable<[MovieEntity]> {
+        guard let sort = try? sortSubject.value() else { return Observable.empty() }
         let pagination = paginationRepository.getPagination(for: sort)
-        return networkMonitor.start().flatMap { isConnected in
-            if isConnected {
-                return pagination.observe()
-                    .map { response in
-                        response.results
+        return sortSubject
+            .flatMap { sort in
+                self.networkMonitor.start().flatMap { isConnected in
+                    if isConnected {
+                        return pagination.observe()
+                            .do { response in
+                                self.coreDataRepository.cacheMovies(
+                                    for: sort,
+                                    movies: response.results,
+                                    page: response.page)
+                            }
+                            .flatMap { _ in
+                                self.coreDataRepository.fetchFromCoreData(for: sort)
+                            }
+                    } else {
+                        return self.coreDataRepository.fetchFromCoreData(for: sort)
+                    }
                 }
-            } else {
-                return Observable<[Movie]>.empty()
             }
-        }
     }
 
-    func loadNextPage(for sort: MovieSortType) {
+    func loadNextPage() {
+        guard let sort = try? sortSubject.value() else { return }
         paginationRepository.loadNextPage(for: sort)
     }
 }

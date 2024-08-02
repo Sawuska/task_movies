@@ -40,6 +40,7 @@ final class MovieListViewController: UIViewController {
         contentView.moviesTableView.contentInset = UIEdgeInsets(top: MovieListView.tableViewInset, left: .zero, bottom: MovieListView.tableViewInset, right: .zero)
 
         setObserver()
+        viewModel.getNextPage()
     }
 
     private func setUpNavigationBar() {
@@ -49,6 +50,7 @@ final class MovieListViewController: UIViewController {
     private func setObserver() {
         contentView.moviesTableView.dataSource = nil
         viewModel.observe()
+            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
                 self.dequeueMovieCell(tableView: tableView, at: index, with: item)
             }
@@ -82,7 +84,7 @@ extension MovieListViewController: UITableViewDelegate {
         guard scrollView.contentSize.height > 0,
               scrollView.bounds.size.height > 0 else { return }
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.bounds.size.height)) {
-            viewModel.getNextPage(for: .popularityDescending)
+            viewModel.getNextPage()
         }
     }
 }

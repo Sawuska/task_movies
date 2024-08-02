@@ -30,7 +30,7 @@ final class Pagination<T: Decodable> {
         if let page = requestParams["page"] as? Int {
             minPage = page
         } else {
-            minPage = 0
+            minPage = 1
         }
         pageSubject = BehaviorSubject<Int>(value: minPage)
         currentPage = minPage
