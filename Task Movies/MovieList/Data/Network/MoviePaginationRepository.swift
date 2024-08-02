@@ -14,10 +14,13 @@ final class MoviePaginationRepository {
     private let paginationFactory: PaginationFactory<MovieResponse>
     private var moviesPagination: [String: Pagination<MovieResponse>] = [:]
 
-    private let defaultParams = Parameters(dictionaryLiteral: ("api_key", "3fd5e68de77c9877441e0d99f37857e5"), ("page", 1))
+    private let defaultParams: Parameters
 
-    init(paginationFactory: PaginationFactory<MovieResponse>) {
+    private var shouldLoadGenres = true
+
+    init(paginationFactory: PaginationFactory<MovieResponse>, apiKey: String) {
         self.paginationFactory = paginationFactory
+        defaultParams = Parameters(dictionaryLiteral: ("api_key", apiKey), ("page", 1))
     }
 
     func getPagination(for sort: MovieSortType) -> Pagination<MovieResponse> {

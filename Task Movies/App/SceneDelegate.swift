@@ -15,15 +15,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let scene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: scene)
         let managedObjContext = AppDelegate().persistentContainer.viewContext
+        let apiKey = "3fd5e68de77c9877441e0d99f37857e5"
         let mainVC = MovieListViewController(
             viewModel: MovieListViewModel(
                 movieRepository: MovieRepository(
                     coreDataRepository: MovieCoreDataRepository(
-                        managedObjContext: managedObjContext),
+                        managedObjContext: managedObjContext, 
+                        genreMapper: GenreMapper()),
                     paginationRepository: MoviePaginationRepository(
                         paginationFactory: PaginationFactory<MovieResponse>(
                             networkService: NetworkService<MovieResponse>(
-                                jsonMapper: JSONMapper<MovieResponse>()))),
+                                jsonMapper: JSONMapper<MovieResponse>())), 
+                        apiKey: apiKey), 
+                    remoteGenreRepository: RemoteGenreRepository(
+                        networkService: NetworkService<GenreResponse>(
+                            jsonMapper: JSONMapper<GenreResponse>()),
+                        apiKey: apiKey),
                     networkMonitor: NetworkMonitor()),
                 uiMovieMapper: UIMovieMapper()))
 

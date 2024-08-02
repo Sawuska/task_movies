@@ -14,9 +14,7 @@ final class UIMovieMapper {
             let year = entity.releaseDate?.prefix(4) ?? "year"
             let titleAndYear = (entity.title ?? "Title") + ", " + year
             let rating = String(entity.rating)
-            let genres = entity.genres?.allObjects
-                .compactMap { ($0 as? GenreEntity)?.name }
-                .joined(separator: ", ") ?? ""
+            let genres = entity.genres ?? ""
             let posterURL = URL(string: "https://image.tmdb.org/t/p/w500" + (entity.posterPath ?? ""))
             return MovieUIModel(
                 titleAndYear: titleAndYear,

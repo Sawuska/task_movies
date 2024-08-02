@@ -12,10 +12,12 @@ import RxSwift
 final class MovieCoreDataRepository {
 
     private let managedObjContext: NSManagedObjectContext
+    private let genreMapper: GenreMapper
     private let limit: Int = 20
 
-    init(managedObjContext: NSManagedObjectContext) {
+    init(managedObjContext: NSManagedObjectContext, genreMapper: GenreMapper) {
         self.managedObjContext = managedObjContext
+        self.genreMapper = genreMapper
     }
 
     func fetchFromCoreData(for sort: MovieSortType) -> Observable<[MovieEntity]> {
@@ -38,7 +40,7 @@ final class MovieCoreDataRepository {
         return request
     }
 
-    func cacheMovies(for sort: MovieSortType, movies: [Movie], page: Int) {
+    func cacheMovies(for sort: MovieSortType, movies: [Movie], genres: [Genre], page: Int) {
         if page == 1 {
             clearMoviesFromOtherSorts(sort: sort)
         }
@@ -56,7 +58,7 @@ final class MovieCoreDataRepository {
             movieEntity.releaseDate = movie.releaseDate
             movieEntity.rating = movie.voteAverage
             movieEntity.posterPath = movie.posterPath
-            movieEntity.genres = nil
+            movieEntity.genres = genreMapper.mapToString(ids: movie.genreIds, from: genres)
         }
         do {
             try managedObjContext.save()

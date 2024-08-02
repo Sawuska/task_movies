@@ -14,15 +14,18 @@ final class MovieRepository {
 
     private let coreDataRepository: MovieCoreDataRepository
     private let paginationRepository: MoviePaginationRepository
+    private let remoteGenreRepository: RemoteGenreRepository
 
     private let networkMonitor: NetworkMonitor
 
     init(coreDataRepository: MovieCoreDataRepository,
          paginationRepository: MoviePaginationRepository,
+         remoteGenreRepository: RemoteGenreRepository,
          networkMonitor: NetworkMonitor
     ) {
         self.coreDataRepository = coreDataRepository
         self.paginationRepository = paginationRepository
+        self.remoteGenreRepository = remoteGenreRepository
         self.networkMonitor = networkMonitor
     }
 
@@ -32,20 +35,21 @@ final class MovieRepository {
         return sortSubject
             .flatMap { sort in
                 self.networkMonitor.start().flatMap { isConnected in
-                    if isConnected {
-                        return pagination.observe()
-                            .do { response in
-                                self.coreDataRepository.cacheMovies(
-                                    for: sort,
-                                    movies: response.results,
-                                    page: response.page)
-                            }
-                            .flatMap { _ in
-                                self.coreDataRepository.fetchFromCoreData(for: sort)
-                            }
-                    } else {
+                    guard isConnected else {
                         return self.coreDataRepository.fetchFromCoreData(for: sort)
                     }
+                    return pagination.observe()
+                        .withLatestFrom(self.remoteGenreRepository.loadGenres()) { ($0, $1) }
+                        .do (onNext: { (response, genres) in
+                            self.coreDataRepository.cacheMovies(
+                                for: sort,
+                                movies: response.results, 
+                                genres: genres,
+                                page: response.page)
+                        })
+                        .flatMap { _ in
+                            self.coreDataRepository.fetchFromCoreData(for: sort)
+                        }
                 }
             }
     }

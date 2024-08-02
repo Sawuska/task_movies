@@ -21,7 +21,7 @@ final class MovieCell: UITableViewCell {
 
     private let titleAndYear: UILabel = {
         @UseAutoLayout var label = UILabel()
-        label.numberOfLines = 4
+        label.numberOfLines = 3
         applyShadow(to: label)
         return label
     }()
@@ -29,7 +29,7 @@ final class MovieCell: UITableViewCell {
     private let genres: UILabel = {
         @UseAutoLayout var label = UILabel()
         label.textAlignment = .left
-        label.numberOfLines = 4
+        label.numberOfLines = 3
         applyShadow(to: label)
         return label
     }()
@@ -103,6 +103,7 @@ final class MovieCell: UITableViewCell {
             titleAndYear.topAnchor.constraint(equalTo: poster.topAnchor, constant: MovieCell.titleTopInset),
             titleAndYear.trailingAnchor.constraint(equalTo: poster.trailingAnchor, constant: -MovieCell.infoHorizontalInset),
 
+            genres.widthAnchor.constraint(equalTo: poster.widthAnchor, multiplier: 0.6),
             horizontalStackView.leadingAnchor.constraint(equalTo: titleAndYear.leadingAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: poster.trailingAnchor, constant: -MovieCell.infoHorizontalInset),
             horizontalStackView.bottomAnchor.constraint(equalTo: poster.bottomAnchor, constant: -MovieCell.genresBottomInset),
