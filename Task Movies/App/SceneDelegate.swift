@@ -32,7 +32,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                             jsonMapper: JSONMapper<GenreResponse>()),
                         apiKey: apiKey),
                     networkMonitor: NetworkMonitor()),
-                uiMovieMapper: UIMovieMapper()))
+                uiMovieMapper: UIMovieMapper(), 
+                uiSortTypeMapper: MovieSortTypeUIMapper()),
+            alertFactory: AlertFactory())
 
         window.rootViewController = UINavigationController(rootViewController: mainVC)
         self.window = window
