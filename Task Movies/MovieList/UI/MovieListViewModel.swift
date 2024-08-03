@@ -12,10 +12,16 @@ final class MovieListViewModel {
 
     private let movieRepository: MovieRepository
     private let uiMovieMapper: UIMovieMapper
+    private let uiSortTypeMapper: MovieSortTypeUIMapper
 
-    init(movieRepository: MovieRepository, uiMovieMapper: UIMovieMapper) {
+    init(
+        movieRepository: MovieRepository,
+        uiMovieMapper: UIMovieMapper,
+        uiSortTypeMapper: MovieSortTypeUIMapper
+    ) {
         self.movieRepository = movieRepository
         self.uiMovieMapper = uiMovieMapper
+        self.uiSortTypeMapper = uiSortTypeMapper
     }
 
     func observe() -> Observable<[MovieUIModel]> {
@@ -28,5 +34,16 @@ final class MovieListViewModel {
 
     func getNextPage() {
         movieRepository.loadNextPage()
+    }
+
+    func changeSort(sortUIModel: MovieSortTypeUIModel) {
+        guard let sort = uiSortTypeMapper.mapUIToSortType(uiModel: sortUIModel) else { return }
+        movieRepository.changeSort(to: sort)
+    }
+
+    func getSortList() -> [MovieSortTypeUIModel] {
+        uiSortTypeMapper.mapSortTypesToUI(
+            sortTypes: movieRepository.getSortTypes(),
+            currentSortType: movieRepository.getCurrentSortType())
     }
 }

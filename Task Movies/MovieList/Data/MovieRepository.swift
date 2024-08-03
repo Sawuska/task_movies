@@ -18,6 +18,8 @@ final class MovieRepository {
 
     private let networkMonitor: NetworkMonitor
 
+    private let sortTypes = MovieSortType.allCases
+
     init(coreDataRepository: MovieCoreDataRepository,
          paginationRepository: MoviePaginationRepository,
          remoteGenreRepository: RemoteGenreRepository,
@@ -30,14 +32,13 @@ final class MovieRepository {
     }
 
     func observe() -> Observable<[MovieEntity]> {
-        guard let sort = try? sortSubject.value() else { return Observable.empty() }
-        let pagination = paginationRepository.getPagination(for: sort)
         return sortSubject
             .flatMap { sort in
                 self.networkMonitor.start().flatMap { isConnected in
                     guard isConnected else {
                         return self.coreDataRepository.fetchFromCoreData(for: sort)
                     }
+                    let pagination = self.paginationRepository.getPagination(for: sort)
                     return pagination.observe()
                         .withLatestFrom(self.remoteGenreRepository.loadGenres()) { ($0, $1) }
                         .do (onNext: { (response, genres) in
@@ -57,5 +58,20 @@ final class MovieRepository {
     func loadNextPage() {
         guard let sort = try? sortSubject.value() else { return }
         paginationRepository.loadNextPage(for: sort)
+    }
+
+    func changeSort(to sort: MovieSortType) {
+        sortSubject.onNext(sort)
+    }
+
+    func getSortTypes() -> [MovieSortType] {
+        sortTypes
+    }
+
+    func getCurrentSortType() -> MovieSortType {
+        guard let sortType = try? sortSubject.value() else {
+            return .popularityDescending
+        }
+        return sortType
     }
 }

@@ -14,10 +14,12 @@ final class MovieListViewController: UIViewController {
     let contentView = MovieListView()
 
     private let viewModel: MovieListViewModel
+    private let alertFactory: AlertFactory
     private let disposeBag = DisposeBag()
 
-    init(viewModel: MovieListViewModel) {
+    init(viewModel: MovieListViewModel, alertFactory: AlertFactory) {
         self.viewModel = viewModel
+        self.alertFactory = alertFactory
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -40,11 +42,30 @@ final class MovieListViewController: UIViewController {
         contentView.moviesTableView.contentInset = UIEdgeInsets(top: MovieListView.tableViewInset, left: .zero, bottom: MovieListView.tableViewInset, right: .zero)
 
         setObserver()
-        viewModel.getNextPage()
     }
 
     private func setUpNavigationBar() {
         navigationItem.title = "Popular Movies"
+        let button = UIBarButtonItem(
+            image: UIImage(systemName: "line.3.horizontal.decrease.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(sortButtonTap))
+        button.tintColor = .label
+        navigationItem.rightBarButtonItem = button
+    }
+
+    @objc
+    private func sortButtonTap() {
+        openSortActionSheet()
+    }
+
+    private func openSortActionSheet() {
+        let actionSheet = alertFactory
+            .createActionSheet(sortUIModels: viewModel.getSortList()) { [weak self] in self?.viewModel.changeSort(sortUIModel: $0)
+                self?.contentView.moviesTableView.setContentOffset(.zero, animated: true)
+            }
+        present(actionSheet, animated: true)
     }
 
     private func setObserver() {
