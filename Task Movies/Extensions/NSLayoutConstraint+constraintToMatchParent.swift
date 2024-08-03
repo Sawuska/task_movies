@@ -39,4 +39,16 @@ extension NSLayoutConstraint {
             child.centerYAnchor.constraint(equalTo: parent.centerYAnchor),
         ])
     }
+
+    static func constraintFrameToMatchParentSafeArea(child: UIView?, parent: UIView?) {
+        guard let child = child, let parent = parent else {
+            return
+        }
+        NSLayoutConstraint.activate([
+            child.leadingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.leadingAnchor),
+            child.trailingAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.trailingAnchor),
+            child.topAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.topAnchor),
+            child.bottomAnchor.constraint(equalTo: parent.safeAreaLayoutGuide.bottomAnchor),
+        ])
+    }
 }

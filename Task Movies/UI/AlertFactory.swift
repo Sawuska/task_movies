@@ -25,9 +25,10 @@ final class AlertFactory {
             let action = UIAlertAction(title: uiModel.title, style: .default) { _ in
                 onSelect(uiModel)
             }
-            if uiModel.isSelected {
-                action.setValue(true, forKey: "checked")
-            }
+            // The task implied that it's better to use a "checked" property instead of
+            // a custom implementation of a UI element, but I'm also aware that it's a private API
+            // that might be subject to change.
+            action.setValue(uiModel.isSelected, forKey: "checked")
             actionSheetController.addAction(action)
         }
 
