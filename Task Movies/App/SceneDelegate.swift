@@ -36,8 +36,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                 uiSortTypeMapper: MovieSortTypeUIMapper()), 
             detailsViewModel: MovieDetailsViewModel(
                 repository: DetailsRepository(
-                    networkService: NetworkService<MovieDetails>(
-                        jsonMapper: JSONMapper<MovieDetails>()),
+                    detailsNetworkService: 
+                        NetworkService<MovieDetails>(
+                            jsonMapper: JSONMapper<MovieDetails>()),
+                    videosNetworkService: NetworkService<MovieVideosResponse>(
+                        jsonMapper: JSONMapper<MovieVideosResponse>()),
+                    trailerMapper: TrailerMapper(),
                     apiKey: apiKey),
                 detailsMapper: MovieDetailsUIMapper(),
                 genreMapper: GenreMapper()),

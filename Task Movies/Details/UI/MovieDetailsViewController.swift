@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import AVKit
 
 final class MovieDetailsViewController: UIViewController {
 
@@ -16,6 +17,7 @@ final class MovieDetailsViewController: UIViewController {
     private let viewModel: MovieDetailsViewModel
     private let movieId: Int
     private var posterURL: URL?
+    private var trailerURL: URL?
 
     init(movieId: Int, viewModel: MovieDetailsViewModel) {
         self.movieId = movieId
@@ -40,6 +42,7 @@ final class MovieDetailsViewController: UIViewController {
         loadDetails()
 
         setImageViewTap()
+        setTrailerButtonTap()
     }
 
     private func loadDetails() {
@@ -48,6 +51,7 @@ final class MovieDetailsViewController: UIViewController {
                 self.navigationItem.title = uiModel.title
                 self.contentView.updateInfo(for: uiModel)
                 self.posterURL = uiModel.posterURL
+                self.trailerURL = uiModel.trailerURL
             }
             .disposed(by: disposeBag)
     }
@@ -72,6 +76,17 @@ final class MovieDetailsViewController: UIViewController {
     private func imageViewTap() {
         let posterVC = PosterViewController(posterURL: posterURL)
         present(posterVC, animated: true)
+    }
+
+    private func setTrailerButtonTap() {
+        contentView.trailerButton.addTarget(self, action: #selector(trailerButtonTap), for: .touchUpInside)
+    }
+
+    @objc
+    private func trailerButtonTap() {
+        guard let url = trailerURL else { return }
+        let playerVC = WebVideoViewController(trailerUrl: url)
+        present(playerVC, animated: true)
     }
 
 }
