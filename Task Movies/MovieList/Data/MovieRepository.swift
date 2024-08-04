@@ -31,7 +31,7 @@ final class MovieRepository {
         self.networkMonitor = networkMonitor
     }
 
-    func observe() -> Observable<[MovieEntity]> {
+    func observeMovies() -> Observable<[MovieEntity]> {
         return sortSubject
             .flatMap { sort in
                 self.networkMonitor.start().flatMap { isConnected in

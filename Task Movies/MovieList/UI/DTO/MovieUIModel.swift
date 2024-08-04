@@ -9,6 +9,7 @@ import Foundation
 
 struct MovieUIModel {
 
+    let id: Int
     let titleAndYear: String
     let rating: String
     let genres: String

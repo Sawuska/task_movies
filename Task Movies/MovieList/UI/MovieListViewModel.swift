@@ -11,12 +11,12 @@ import RxSwift
 final class MovieListViewModel {
 
     private let movieRepository: MovieRepository
-    private let uiMovieMapper: UIMovieMapper
+    private let uiMovieMapper: MovieUIMapper
     private let uiSortTypeMapper: MovieSortTypeUIMapper
 
     init(
         movieRepository: MovieRepository,
-        uiMovieMapper: UIMovieMapper,
+        uiMovieMapper: MovieUIMapper,
         uiSortTypeMapper: MovieSortTypeUIMapper
     ) {
         self.movieRepository = movieRepository
@@ -24,9 +24,9 @@ final class MovieListViewModel {
         self.uiSortTypeMapper = uiSortTypeMapper
     }
 
-    func observe() -> Observable<[MovieUIModel]> {
+    func observeMovies() -> Observable<[MovieUIModel]> {
         movieRepository
-            .observe()
+            .observeMovies()
             .map { movies in
                 self.uiMovieMapper.mapEntitiesToUI(movies: movies)
             }

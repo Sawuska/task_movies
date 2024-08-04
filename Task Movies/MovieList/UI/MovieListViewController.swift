@@ -14,11 +14,17 @@ final class MovieListViewController: UIViewController {
     let contentView = MovieListView()
 
     private let viewModel: MovieListViewModel
+    private let detailsViewModel: MovieDetailsViewModel
     private let alertFactory: AlertFactory
     private let disposeBag = DisposeBag()
 
-    init(viewModel: MovieListViewModel, alertFactory: AlertFactory) {
+    init(
+        viewModel: MovieListViewModel,
+        detailsViewModel: MovieDetailsViewModel,
+        alertFactory: AlertFactory
+    ) {
         self.viewModel = viewModel
+        self.detailsViewModel = detailsViewModel
         self.alertFactory = alertFactory
         super.init(nibName: nil, bundle: nil)
     }
@@ -29,7 +35,7 @@ final class MovieListViewController: UIViewController {
 
     override func loadView() {
         super.loadView()
-        view = contentView
+        view.addSubview(contentView)
     }
 
     override func viewDidLoad() {
@@ -70,12 +76,23 @@ final class MovieListViewController: UIViewController {
 
     private func setObserver() {
         contentView.moviesTableView.dataSource = nil
-        viewModel.observe()
+        viewModel.observeMovies()
             .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
                 self.dequeueMovieCell(tableView: tableView, at: index, with: item)
             }
             .disposed(by: self.disposeBag)
+
+        contentView.moviesTableView.rx.modelSelected(MovieUIModel.self)
+            .subscribe { [weak self] event in
+                guard let viewModel = self?.detailsViewModel,
+                      let id = event.element?.id else { return }
+                let vc = MovieDetailsViewController(
+                    movieId: id,
+                    viewModel: viewModel)
+                self?.navigationController?.pushViewController(vc, animated: true)
+            }
+            .disposed(by: disposeBag)
     }
 
     private func dequeueMovieCell(
