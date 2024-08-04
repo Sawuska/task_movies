@@ -49,6 +49,7 @@ final class MovieDetailsView: UIView {
     let poster: UIImageView = {
         @UseAutoLayout var view = UIImageView()
         view.contentMode = .scaleAspectFill
+        view.isUserInteractionEnabled = true
         view.clipsToBounds = true
         view.kf.indicatorType = .activity
         return view

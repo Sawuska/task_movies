@@ -21,6 +21,8 @@
 		A88E6CAB2C5E7CFD007BC570 /* MovieDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E6CAA2C5E7CFD007BC570 /* MovieDetailsViewController.swift */; };
 		A88E6CAD2C5E7D0E007BC570 /* MovieDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E6CAC2C5E7D0E007BC570 /* MovieDetailsView.swift */; };
 		A88E6CAF2C5E7D4A007BC570 /* MovieDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E6CAE2C5E7D4A007BC570 /* MovieDetailsViewModel.swift */; };
+		A88E6CB22C5EE212007BC570 /* PosterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E6CB12C5EE212007BC570 /* PosterView.swift */; };
+		A88E6CB42C5EE58E007BC570 /* PosterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A88E6CB32C5EE58E007BC570 /* PosterViewController.swift */; };
 		A89D3EC82C5A6ACA00367B0F /* UIView+UseAutoLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3EC72C5A6ACA00367B0F /* UIView+UseAutoLayout.swift */; };
 		A89D3ECA2C5A6B0500367B0F /* MovieCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3EC92C5A6B0500367B0F /* MovieCell.swift */; };
 		A89D3ECC2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A89D3ECB2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift */; };
@@ -69,6 +71,8 @@
 		A88E6CAA2C5E7CFD007BC570 /* MovieDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewController.swift; sourceTree = "<group>"; };
 		A88E6CAC2C5E7D0E007BC570 /* MovieDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsView.swift; sourceTree = "<group>"; };
 		A88E6CAE2C5E7D4A007BC570 /* MovieDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailsViewModel.swift; sourceTree = "<group>"; };
+		A88E6CB12C5EE212007BC570 /* PosterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterView.swift; sourceTree = "<group>"; };
+		A88E6CB32C5EE58E007BC570 /* PosterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosterViewController.swift; sourceTree = "<group>"; };
 		A89D3EC72C5A6ACA00367B0F /* UIView+UseAutoLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+UseAutoLayout.swift"; sourceTree = "<group>"; };
 		A89D3EC92C5A6B0500367B0F /* MovieCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieCell.swift; sourceTree = "<group>"; };
 		A89D3ECB2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSLayoutConstraint+constraintToMatchParent.swift"; sourceTree = "<group>"; };
@@ -157,6 +161,7 @@
 		A88E6CA02C5E0F3A007BC570 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A88E6CB02C5EE110007BC570 /* Poster */,
 				A88E6CA42C5E1067007BC570 /* MovieDetailsUIModel.swift */,
 				A88E6CA62C5E1072007BC570 /* MovieDetailsUIMapper.swift */,
 				A88E6CAA2C5E7CFD007BC570 /* MovieDetailsViewController.swift */,
@@ -173,6 +178,15 @@
 				A88E6CA82C5E7031007BC570 /* DetailsRepository.swift */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		A88E6CB02C5EE110007BC570 /* Poster */ = {
+			isa = PBXGroup;
+			children = (
+				A88E6CB12C5EE212007BC570 /* PosterView.swift */,
+				A88E6CB32C5EE58E007BC570 /* PosterViewController.swift */,
+			);
+			path = Poster;
 			sourceTree = "<group>";
 		};
 		A89D3EC62C5A6AA300367B0F /* Extensions */ = {
@@ -382,6 +396,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A89D3EE92C5B910600367B0F /* MovieSortType.swift in Sources */,
+				A88E6CB42C5EE58E007BC570 /* PosterViewController.swift in Sources */,
 				A878710C2C5D199B00A7518D /* RemoteGenreRepository.swift in Sources */,
 				A89D3EE72C5B8DE700367B0F /* MovieResponse.swift in Sources */,
 				A89D3EEF2C5B999D00367B0F /* MovieUIModel.swift in Sources */,
@@ -416,6 +431,7 @@
 				A8D944402C5A447900580A93 /* SceneDelegate.swift in Sources */,
 				A89D3EC82C5A6ACA00367B0F /* UIView+UseAutoLayout.swift in Sources */,
 				A89D3EE12C5B8D7C00367B0F /* Pagination.swift in Sources */,
+				A88E6CB22C5EE212007BC570 /* PosterView.swift in Sources */,
 				A8D944592C5A656C00580A93 /* MovieListViewModel.swift in Sources */,
 				A89D3ED62C5B8B8800367B0F /* MoviePaginationRepository.swift in Sources */,
 				A87871102C5D1A4800A7518D /* Genre.swift in Sources */,

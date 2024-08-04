@@ -13,8 +13,9 @@ final class MovieDetailsViewController: UIViewController {
     let contentView = MovieDetailsView()
 
     private let disposeBag = DisposeBag()
-    private let movieId: Int
     private let viewModel: MovieDetailsViewModel
+    private let movieId: Int
+    private var posterURL: URL?
 
     init(movieId: Int, viewModel: MovieDetailsViewModel) {
         self.movieId = movieId
@@ -34,12 +35,30 @@ final class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        loadDetails()
+
+        setImageViewTap()
+    }
+
+    private func loadDetails() {
         viewModel.loadDetails(id: movieId)
             .subscribe { uiModel in
                 self.navigationItem.title = uiModel.title
                 self.contentView.updateInfo(for: uiModel)
+                self.posterURL = uiModel.posterURL
             }
             .disposed(by: disposeBag)
+    }
+
+    private func setImageViewTap() {
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageViewTap))
+        contentView.poster.addGestureRecognizer(tapGestureRecognizer)
+    }
+
+    @objc
+    private func imageViewTap() {
+        let posterVC = PosterViewController(posterURL: posterURL)
+        present(posterVC, animated: true)
     }
 
 }
