@@ -96,8 +96,14 @@ final class MovieDetailsView: UIView {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        NSLayoutConstraint.constraintFrameToMatchParentSafeArea(child: scrollView, parent: self)
+        NSLayoutConstraint.constraintFrameToMatchParent(child: self, parent: superview)
+
         NSLayoutConstraint.activate([
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
+            scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+            scrollView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor),
+
             poster.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             poster.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
             poster.topAnchor.constraint(equalTo: scrollView.topAnchor),
@@ -121,11 +127,9 @@ final class MovieDetailsView: UIView {
 
             overview.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             overview.trailingAnchor.constraint(equalTo: title.trailingAnchor),
-            overview.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: MovieDetailsView.verticalInset),
-            overview.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: -MovieDetailsView.verticalInset)
+            overview.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: MovieDetailsView.verticalInset)
         ])
 
-        NSLayoutConstraint.constraintFrameToMatchParent(child: self, parent: superview)
     }
 
     func updateInfo(for movie: MovieDetailsUIModel) {

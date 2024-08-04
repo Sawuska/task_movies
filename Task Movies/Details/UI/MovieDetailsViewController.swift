@@ -35,6 +35,8 @@ final class MovieDetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        setUpNavigationItem()
+
         loadDetails()
 
         setImageViewTap()
@@ -48,6 +50,17 @@ final class MovieDetailsViewController: UIViewController {
                 self.posterURL = uiModel.posterURL
             }
             .disposed(by: disposeBag)
+    }
+
+    private func setUpNavigationItem() {
+        let button = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonTap))
+        button.tintColor = .label
+        navigationItem.leftBarButtonItem = button
+    }
+
+    @objc
+    private func backButtonTap() {
+        navigationController?.popViewController(animated: true)
     }
 
     private func setImageViewTap() {
