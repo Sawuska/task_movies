@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A8687D282C5FCDB300822B39 /* WebVideoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8687D272C5FCDB300822B39 /* WebVideoViewController.swift */; };
+		A875D8722C5FFE5B0016B84B /* MovieTrailer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A875D8712C5FFE5B0016B84B /* MovieTrailer.swift */; };
+		A875D8742C5FFEC90016B84B /* MovieVideosResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A875D8732C5FFEC90016B84B /* MovieVideosResponse.swift */; };
+		A875D8762C60001B0016B84B /* TrailerMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A875D8752C60001B0016B84B /* TrailerMapper.swift */; };
 		A878710C2C5D199B00A7518D /* RemoteGenreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = A878710B2C5D199B00A7518D /* RemoteGenreRepository.swift */; };
 		A878710E2C5D1A1C00A7518D /* GenreResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A878710D2C5D1A1C00A7518D /* GenreResponse.swift */; };
 		A87871102C5D1A4800A7518D /* Genre.swift in Sources */ = {isa = PBXBuildFile; fileRef = A878710F2C5D1A4800A7518D /* Genre.swift */; };
@@ -57,6 +61,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A8687D272C5FCDB300822B39 /* WebVideoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebVideoViewController.swift; sourceTree = "<group>"; };
+		A875D8712C5FFE5B0016B84B /* MovieTrailer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieTrailer.swift; sourceTree = "<group>"; };
+		A875D8732C5FFEC90016B84B /* MovieVideosResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieVideosResponse.swift; sourceTree = "<group>"; };
+		A875D8752C60001B0016B84B /* TrailerMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrailerMapper.swift; sourceTree = "<group>"; };
 		A878710B2C5D199B00A7518D /* RemoteGenreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteGenreRepository.swift; sourceTree = "<group>"; };
 		A878710D2C5D1A1C00A7518D /* GenreResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GenreResponse.swift; sourceTree = "<group>"; };
 		A878710F2C5D1A4800A7518D /* Genre.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Genre.swift; sourceTree = "<group>"; };
@@ -119,6 +127,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A875D8702C5FFDED0016B84B /* Trailer */ = {
+			isa = PBXGroup;
+			children = (
+				A8687D272C5FCDB300822B39 /* WebVideoViewController.swift */,
+			);
+			path = Trailer;
+			sourceTree = "<group>";
+		};
 		A88E6C9C2C5E0EA4007BC570 /* DTO */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,6 +177,7 @@
 		A88E6CA02C5E0F3A007BC570 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				A875D8702C5FFDED0016B84B /* Trailer */,
 				A88E6CB02C5EE110007BC570 /* Poster */,
 				A88E6CA42C5E1067007BC570 /* MovieDetailsUIModel.swift */,
 				A88E6CA62C5E1072007BC570 /* MovieDetailsUIMapper.swift */,
@@ -176,6 +193,9 @@
 			children = (
 				A88E6CA22C5E0F6B007BC570 /* MovieDetails.swift */,
 				A88E6CA82C5E7031007BC570 /* DetailsRepository.swift */,
+				A875D8712C5FFE5B0016B84B /* MovieTrailer.swift */,
+				A875D8732C5FFEC90016B84B /* MovieVideosResponse.swift */,
+				A875D8752C60001B0016B84B /* TrailerMapper.swift */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -399,6 +419,7 @@
 				A88E6CB42C5EE58E007BC570 /* PosterViewController.swift in Sources */,
 				A878710C2C5D199B00A7518D /* RemoteGenreRepository.swift in Sources */,
 				A89D3EE72C5B8DE700367B0F /* MovieResponse.swift in Sources */,
+				A875D8722C5FFE5B0016B84B /* MovieTrailer.swift in Sources */,
 				A89D3EEF2C5B999D00367B0F /* MovieUIModel.swift in Sources */,
 				A88E6CAD2C5E7D0E007BC570 /* MovieDetailsView.swift in Sources */,
 				A87871162C5DFB3000A7518D /* MovieSortTypeUIMapper.swift in Sources */,
@@ -411,8 +432,10 @@
 				A89D3ED42C5B8B7800367B0F /* MovieCoreDataRepository.swift in Sources */,
 				A878710E2C5D1A1C00A7518D /* GenreResponse.swift in Sources */,
 				A89D3EDD2C5B8D2C00367B0F /* PaginationFactory.swift in Sources */,
+				A875D8742C5FFEC90016B84B /* MovieVideosResponse.swift in Sources */,
 				A89D3EDF2C5B8D5400367B0F /* NetworkService.swift in Sources */,
 				A89D3EED2C5B990E00367B0F /* MovieUIMapper.swift in Sources */,
+				A8687D282C5FCDB300822B39 /* WebVideoViewController.swift in Sources */,
 				A89D3ED82C5B8B9400367B0F /* MovieRepository.swift in Sources */,
 				A87871182C5DFB4800A7518D /* MovieSortTypeUIModel.swift in Sources */,
 				A89D3ECC2C5A6B4600367B0F /* NSLayoutConstraint+constraintToMatchParent.swift in Sources */,
@@ -434,6 +457,7 @@
 				A88E6CB22C5EE212007BC570 /* PosterView.swift in Sources */,
 				A8D944592C5A656C00580A93 /* MovieListViewModel.swift in Sources */,
 				A89D3ED62C5B8B8800367B0F /* MoviePaginationRepository.swift in Sources */,
+				A875D8762C60001B0016B84B /* TrailerMapper.swift in Sources */,
 				A87871102C5D1A4800A7518D /* Genre.swift in Sources */,
 				A87871142C5DF96400A7518D /* AlertFactory.swift in Sources */,
 			);
@@ -595,6 +619,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.koval.Task-Movies";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -624,6 +652,10 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "com.koval.Task-Movies";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -14,5 +14,8 @@ struct  MovieDetailsUIModel {
     let rating: String
     let overview: String
     let genres: String
+    let shouldEnableImageInteraction: Bool
     let posterURL: URL?
+    let shouldHideTrailerButton: Bool
+    let trailerURL: URL?
 }

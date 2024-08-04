@@ -26,9 +26,9 @@ final class MovieDetailsViewModel {
 
     func loadDetails(id: Int) -> Single<MovieDetailsUIModel> {
         repository.loadDetails(for: id)
-            .map { details in
+            .map { (details, trailer) in
                 self.detailsMapper
-                    .mapDetailsToUI(details: details, genreMapper: self.genreMapper)
+                    .mapDetailsToUI(details: details, trailer: trailer, genreMapper: self.genreMapper)
             }
     }
 }

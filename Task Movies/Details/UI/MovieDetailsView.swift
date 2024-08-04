@@ -14,6 +14,7 @@ final class MovieDetailsView: UIView {
     private static let verticalInset: CGFloat = 15
     private static let primaryFontSize: CGFloat = 24
     private static let secondaryFontSize: CGFloat = 18
+    private static let trailerButtonSide: CGFloat = 40
     private static let heightToWidth: CGFloat = 0.7
 
     private let title: UILabel = {
@@ -42,14 +43,19 @@ final class MovieDetailsView: UIView {
 
     let trailerButton: UIButton = {
         @UseAutoLayout var button = UIButton()
-        button.setTitle("Trailer", for: .normal)
+        var configuration = UIButton.Configuration.filled()
+        configuration.cornerStyle = .capsule
+        configuration.image = UIImage(systemName: "play.rectangle.fill")
+        configuration.baseForegroundColor = .systemBackground
+        configuration.baseBackgroundColor = .label
+        button.configuration = configuration
+        button.isHidden = true
         return button
     }()
 
     let poster: UIImageView = {
         @UseAutoLayout var view = UIImageView()
         view.contentMode = .scaleAspectFill
-        view.isUserInteractionEnabled = true
         view.clipsToBounds = true
         view.kf.indicatorType = .activity
         return view
@@ -69,7 +75,7 @@ final class MovieDetailsView: UIView {
             arrangedSubviews: [trailerButton, rating])
         stackView.axis = .horizontal
         stackView.distribution = .equalSpacing
-        stackView.alignment = .top
+        stackView.alignment = .center
         stackView.useAutoLayout()
         return stackView
     }()
@@ -121,6 +127,9 @@ final class MovieDetailsView: UIView {
             genres.trailingAnchor.constraint(equalTo: title.trailingAnchor),
             genres.topAnchor.constraint(equalTo: countryAndYear.bottomAnchor, constant: MovieDetailsView.verticalInset),
 
+            trailerButton.heightAnchor.constraint(equalToConstant: MovieDetailsView.trailerButtonSide),
+            trailerButton.widthAnchor.constraint(equalToConstant: MovieDetailsView.trailerButtonSide),
+
             horizontalStackView.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             horizontalStackView.trailingAnchor.constraint(equalTo: title.trailingAnchor),
             horizontalStackView.topAnchor.constraint(equalTo: genres.bottomAnchor, constant: MovieDetailsView.verticalInset),
@@ -138,7 +147,8 @@ final class MovieDetailsView: UIView {
         genres.text = movie.genres
         rating.text = movie.rating
         overview.text = movie.overview
-        trailerButton.alpha = 0
+        trailerButton.isHidden = movie.shouldHideTrailerButton
+        poster.isUserInteractionEnabled = movie.shouldEnableImageInteraction
 
         poster.kf.setImage(
             with: movie.posterURL,
