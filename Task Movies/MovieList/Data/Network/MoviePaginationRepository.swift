@@ -18,9 +18,9 @@ final class MoviePaginationRepository {
 
     private var shouldLoadGenres = true
 
-    init(paginationFactory: PaginationFactory<MovieResponse>, apiKey: String) {
+    init(paginationFactory: PaginationFactory<MovieResponse>, apiKey: String, language: String) {
         self.paginationFactory = paginationFactory
-        defaultParams = Parameters(dictionaryLiteral: ("api_key", apiKey), ("page", 1))
+        defaultParams = Parameters(dictionaryLiteral: ("api_key", apiKey), ("page", 1), ("language", language))
     }
 
     func getPagination(for request: MovieRequestType) -> Pagination<MovieResponse> {

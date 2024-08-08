@@ -17,17 +17,17 @@ final class MovieSortTypeUIMapper {
             let title: String
             switch(sortType) {
             case .ratingAscending:
-                title = "By Rating (Ascending)"
+                title = String(localized: "By Rating (Ascending)")
             case .ratingDescending:
-                title = "By Rating (Descending)"
+                title = String(localized: "By Rating (Descending)")
             case .popularityAscending:
-                title = "By Popularity (Ascending)"
+                title = String(localized: "By Popularity (Ascending)")
             case .popularityDescending:
-                title = "By Popularity (Descending)"
+                title = String(localized: "By Popularity (Descending)")
             case .revenueDescending:
-                title = "By Revenue (Descending)"
+                title = String(localized: "By Revenue (Descending)")
             case .revenueAscending:
-                title = "By Revenue (Ascending)"
+                title = String(localized: "By Revenue (Ascending)")
             }
             return MovieSortTypeUIModel(
                 id: sortType.rawValue,

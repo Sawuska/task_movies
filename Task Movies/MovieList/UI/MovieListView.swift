@@ -22,7 +22,7 @@ final class MovieListView: UIView {
     let searchBarView: UISearchBar = {
         @UseAutoLayout var view = UISearchBar()
         view.searchBarStyle = .minimal
-        view.placeholder = "Search"
+        view.placeholder = String(localized: "Search")
         view.searchTextField.backgroundColor = .systemFill
         return view
     }()
@@ -40,7 +40,7 @@ final class MovieListView: UIView {
 
     private let placeholder: UILabel = {
         @UseAutoLayout var view = UILabel(withSystemFontOfSize: 24)
-        view.text = "Nothing found"
+        view.text = String(localized: "Nothing found")
         view.backgroundColor = .clear
         view.textColor = .darkGray
         view.numberOfLines = 3

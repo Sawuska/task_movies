@@ -14,18 +14,19 @@ final class DetailsRepository {
     private let detailsNetworkService: NetworkService<MovieDetails>
     private let videosNetworkService: NetworkService<MovieVideosResponse>
     private let trailerMapper: TrailerMapper
-    private let apiKey: String
+    private let defaultParams: Parameters
 
     init(
         detailsNetworkService: NetworkService<MovieDetails>,
         videosNetworkService: NetworkService<MovieVideosResponse>,
         trailerMapper: TrailerMapper,
-        apiKey: String
+        apiKey: String,
+        language: String
     ) {
         self.detailsNetworkService = detailsNetworkService
         self.videosNetworkService = videosNetworkService
         self.trailerMapper = trailerMapper
-        self.apiKey = apiKey
+        defaultParams = Parameters(dictionaryLiteral: ("api_key", apiKey), ("page", 1), ("language", language))
     }
 
     func loadDetails(for movieId: Int) -> Single<(MovieDetails?, MovieTrailer?)> {
@@ -38,13 +39,13 @@ final class DetailsRepository {
     private func loadInfo(for movieId: Int) -> Single<MovieDetails?> {
         detailsNetworkService.fetchData(
             urlString: "https://api.themoviedb.org/3/movie/\(String(movieId))",
-            parameters: Parameters(dictionaryLiteral: ("api_key", apiKey)))
+            parameters: defaultParams)
     }
 
     private func loadTrailer(for movieId: Int) -> Single<MovieTrailer?> {
         videosNetworkService.fetchData(
             urlString: "https://api.themoviedb.org/3/movie/\(String(movieId))/videos",
-            parameters: Parameters(dictionaryLiteral: ("api_key", apiKey)))
+            parameters: defaultParams)
         .map { response in
             self.trailerMapper.mapFromResponse(response: response)
         }
