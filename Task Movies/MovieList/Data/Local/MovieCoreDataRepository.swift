@@ -20,29 +20,38 @@ final class MovieCoreDataRepository {
         self.genreMapper = genreMapper
     }
 
-    func fetchFromCoreData(for sort: MovieSortType) -> Observable<[MovieEntity]> {
-        guard let request = self.createMovieFetchRequest(for: sort) else { return Observable.empty() }
+    func fetchFromCoreData(for request: MovieRequestType, shouldSearchLocal: Bool) -> Observable<[MovieEntity]> {
+        guard let request = self.createMovieFetchRequest(for: request, shouldSearchLocal: shouldSearchLocal) else {
+            return Observable.empty()
+        }
         return managedObjContext
             .observeOnChange(request: request)
     }
 
-    private func createMovieFetchRequest(for sort: MovieSortType) -> NSFetchRequest<MovieEntity>? {
+    private func createMovieFetchRequest(for request: MovieRequestType, shouldSearchLocal: Bool) -> NSFetchRequest<MovieEntity>? {
         let entityDescription = NSEntityDescription.entity(
             forEntityName: "MovieEntity",
             in: managedObjContext)
-        let request = MovieEntity.fetchRequest()
-        request.entity = entityDescription
+        let fetchRequest = MovieEntity.fetchRequest()
+        fetchRequest.entity = entityDescription
 
-        let predicate = NSPredicate(format: "sort = %@", sort.rawValue)
-        request.predicate = predicate
+        let predicate: NSPredicate
+
+        if shouldSearchLocal, case .search(let query) = request {
+            predicate = NSPredicate(format: "title contains[c] %@", query)
+        } else {
+            predicate = NSPredicate(format: "sort = %@", request.description)
+        }
+
+        fetchRequest.predicate = predicate
         let sortDecriptor = NSSortDescriptor(key: "showOrder", ascending: true)
-        request.sortDescriptors = [sortDecriptor]
-        return request
+        fetchRequest.sortDescriptors = [sortDecriptor]
+        return fetchRequest
     }
 
-    func cacheMovies(for sort: MovieSortType, movies: [Movie], genres: [Genre], page: Int) {
+    func cacheMovies(for request: MovieRequestType, movies: [Movie], genres: [Genre], page: Int) {
         if page == 1 {
-            clearMoviesFromOtherSorts(sort: sort)
+            clearMoviesFromOtherRequests(request: request)
         }
         guard let movieEntityDescription =
             NSEntityDescription.entity(forEntityName: "MovieEntity",
@@ -53,7 +62,7 @@ final class MovieCoreDataRepository {
                 insertInto: managedObjContext)
             movieEntity.id = Int64(movie.id)
             movieEntity.title = movie.title
-            movieEntity.sort = sort.rawValue
+            movieEntity.sort = request.description
             movieEntity.showOrder = Int64(page * limit + i)
             movieEntity.releaseDate = movie.releaseDate
             movieEntity.rating = movie.voteAverage
@@ -76,17 +85,17 @@ final class MovieCoreDataRepository {
         }
     }
 
-    private func clearMoviesFromOtherSorts(sort: MovieSortType) {
+    private func clearMoviesFromOtherRequests(request: MovieRequestType) {
         let entityDescription = NSEntityDescription.entity(
             forEntityName: "MovieEntity",
             in: managedObjContext)
-        let request = MovieEntity.fetchRequest()
-        request.entity = entityDescription
+        let fetchRequest = MovieEntity.fetchRequest()
+        fetchRequest.entity = entityDescription
 
-        let predicate = NSPredicate(format: "sort != %@", sort.rawValue)
-        request.predicate = predicate
+        let predicate = NSPredicate(format: "sort != %@", request.description)
+        fetchRequest.predicate = predicate
         do {
-            let results = try self.managedObjContext.fetch(request)
+            let results = try self.managedObjContext.fetch(fetchRequest)
             results.forEach { managedObjContext.delete($0) }
         } catch let error {
             print(error.localizedDescription)

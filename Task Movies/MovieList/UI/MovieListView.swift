@@ -10,11 +10,20 @@ import UIKit
 final class MovieListView: UIView {
     
     static let tableViewInset: CGFloat = 10
+    private static let searchHeightToViewHeight: CGFloat = 0.08
 
     private let loadingView: UIActivityIndicatorView = {
         @UseAutoLayout var view = UIActivityIndicatorView(style: .large)
         view.backgroundColor = .clear
         view.hidesWhenStopped = true
+        return view
+    }()
+
+    let searchBarView: UISearchBar = {
+        @UseAutoLayout var view = UISearchBar()
+        view.searchBarStyle = .minimal
+        view.placeholder = "Search"
+        view.searchTextField.backgroundColor = .systemFill
         return view
     }()
 
@@ -29,7 +38,7 @@ final class MovieListView: UIView {
 
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(
-            arrangedSubviews: [moviesTableView])
+            arrangedSubviews: [searchBarView, moviesTableView])
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .fill
@@ -59,13 +68,14 @@ final class MovieListView: UIView {
             mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            searchBarView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: MovieListView.searchHeightToViewHeight),
         ])
 
         NSLayoutConstraint.constraintFrameToMatchParent(child: loadingView, parent: moviesTableView)
     }
 
     func scrollToTop() {
-        moviesTableView.contentOffset = .zero
+        moviesTableView.setContentOffset(.zero, animated: true)
     }
 
     func startLoadingIndicator() {
@@ -76,5 +86,11 @@ final class MovieListView: UIView {
     func stopLoadingIndicator() {
         loadingView.stopAnimating()
         loadingView.isHidden = true
+    }
+
+    func hideKeyboard() {
+        if searchBarView.isFirstResponder {
+            searchBarView.endEditing(true)
+        }
     }
 }

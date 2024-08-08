@@ -46,4 +46,8 @@ final class MovieListViewModel {
             sortTypes: movieRepository.getSortTypes(),
             currentSortType: movieRepository.getCurrentSortType())
     }
+
+    func searchMovie(for query: String) {
+        movieRepository.searchMovie(query: query)
+    }
 }

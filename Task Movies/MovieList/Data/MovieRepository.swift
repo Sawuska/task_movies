@@ -10,7 +10,7 @@ import RxSwift
 
 final class MovieRepository {
 
-    private let sortSubject = BehaviorSubject<MovieSortType>(value: .popularityDescending)
+    private let requestSubject = BehaviorSubject<MovieRequestType>(value: .discover(sort: .popularityDescending))
 
     private let coreDataRepository: MovieCoreDataRepository
     private let paginationRepository: MoviePaginationRepository
@@ -19,6 +19,8 @@ final class MovieRepository {
     private let networkMonitor: NetworkMonitor
 
     private let sortTypes = MovieSortType.allCases
+
+    private var lastSortType: MovieSortType = .popularityDescending
 
     init(coreDataRepository: MovieCoreDataRepository,
          paginationRepository: MoviePaginationRepository,
@@ -32,36 +34,43 @@ final class MovieRepository {
     }
 
     func observeMovies() -> Observable<[MovieEntity]> {
-        return sortSubject
-            .flatMap { sort in
-                self.networkMonitor.start().flatMap { isConnected in
+        return requestSubject
+            .flatMap { request in
+                self.saveLastSortType(from: request)
+                return self.networkMonitor.start().flatMap { isConnected in
                     guard isConnected else {
-                        return self.coreDataRepository.fetchFromCoreData(for: sort)
+                        return self.coreDataRepository.fetchFromCoreData(for: request, shouldSearchLocal: true)
                     }
-                    let pagination = self.paginationRepository.getPagination(for: sort)
+                    let pagination = self.paginationRepository.getPagination(for: request)
                     return pagination.observe()
                         .withLatestFrom(self.remoteGenreRepository.loadGenres()) { ($0, $1) }
                         .do (onNext: { (response, genres) in
                             self.coreDataRepository.cacheMovies(
-                                for: sort,
-                                movies: response.results, 
+                                for: request,
+                                movies: response.results,
                                 genres: genres,
                                 page: response.page)
                         })
                         .flatMap { _ in
-                            self.coreDataRepository.fetchFromCoreData(for: sort)
+                            self.coreDataRepository.fetchFromCoreData(for: request, shouldSearchLocal: false)
                         }
                 }
             }
     }
 
+    private func saveLastSortType(from request: MovieRequestType) {
+        if case .discover(let sort) = request {
+            lastSortType = sort
+        }
+    }
+
     func loadNextPage() {
-        guard let sort = try? sortSubject.value() else { return }
-        paginationRepository.loadNextPage(for: sort)
+        guard let request = try? requestSubject.value() else { return }
+        paginationRepository.loadNextPage(for: request)
     }
 
     func changeSort(to sort: MovieSortType) {
-        sortSubject.onNext(sort)
+        requestSubject.onNext(.discover(sort: sort))
     }
 
     func getSortTypes() -> [MovieSortType] {
@@ -69,9 +78,17 @@ final class MovieRepository {
     }
 
     func getCurrentSortType() -> MovieSortType {
-        guard let sortType = try? sortSubject.value() else {
+        guard case .discover(let sortType) = try? requestSubject.value() else {
             return .popularityDescending
         }
         return sortType
+    }
+
+    func searchMovie(query: String) {
+        guard !query.isEmpty else {
+            requestSubject.onNext(.discover(sort: lastSortType))
+            return
+        }
+        requestSubject.onNext(.search(query: query))
     }
 }
