@@ -10,11 +10,20 @@ import UIKit
 final class MovieListView: UIView {
     
     static let tableViewInset: CGFloat = 10
+    private static let searchHeightToViewHeight: CGFloat = 0.08
 
     private let loadingView: UIActivityIndicatorView = {
         @UseAutoLayout var view = UIActivityIndicatorView(style: .large)
         view.backgroundColor = .clear
         view.hidesWhenStopped = true
+        return view
+    }()
+
+    let searchBarView: UISearchBar = {
+        @UseAutoLayout var view = UISearchBar()
+        view.searchBarStyle = .minimal
+        view.placeholder = "Search"
+        view.searchTextField.backgroundColor = .systemFill
         return view
     }()
 
@@ -27,9 +36,19 @@ final class MovieListView: UIView {
         return view
     }()
 
+    private let placeholder: UILabel = {
+        @UseAutoLayout var view = UILabel(withSystemFontOfSize: 24)
+        view.text = "Nothing found"
+        view.backgroundColor = .clear
+        view.textColor = .darkGray
+        view.numberOfLines = 3
+        view.textAlignment = .center
+        return view
+    }()
+
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(
-            arrangedSubviews: [moviesTableView])
+            arrangedSubviews: [searchBarView, moviesTableView])
         stackView.axis = .vertical
         stackView.distribution = .fill
         stackView.alignment = .fill
@@ -40,8 +59,7 @@ final class MovieListView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(mainStackView)
-        addSubview(loadingView)
+        [mainStackView, loadingView, placeholder].forEach(addSubview)
         backgroundColor = .systemBackground
         useAutoLayout()
     }
@@ -59,13 +77,20 @@ final class MovieListView: UIView {
             mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+
+            searchBarView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: MovieListView.searchHeightToViewHeight),
+
+            placeholder.topAnchor.constraint(equalTo: moviesTableView.topAnchor),
+            placeholder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            placeholder.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            placeholder.heightAnchor.constraint(equalTo: moviesTableView.heightAnchor, multiplier: 0.5),
         ])
 
         NSLayoutConstraint.constraintFrameToMatchParent(child: loadingView, parent: moviesTableView)
     }
 
     func scrollToTop() {
-        moviesTableView.contentOffset = .zero
+        moviesTableView.setContentOffset(.zero, animated: true)
     }
 
     func startLoadingIndicator() {
@@ -76,5 +101,19 @@ final class MovieListView: UIView {
     func stopLoadingIndicator() {
         loadingView.stopAnimating()
         loadingView.isHidden = true
+    }
+
+    func hideKeyboard() {
+        if searchBarView.isFirstResponder {
+            searchBarView.endEditing(true)
+        }
+    }
+
+    func showNoResultsPlaceholder() {
+        placeholder.isHidden = false
+    }
+
+    func hideNoResultsPlaceholder() {
+        placeholder.isHidden = true
     }
 }

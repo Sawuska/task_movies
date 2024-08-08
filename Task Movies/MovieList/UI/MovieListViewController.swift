@@ -45,9 +45,10 @@ final class MovieListViewController: UIViewController {
 
         contentView.moviesTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
-        contentView.moviesTableView.contentInset = UIEdgeInsets(top: MovieListView.tableViewInset, left: .zero, bottom: MovieListView.tableViewInset, right: .zero)
+        contentView.moviesTableView.contentInset = UIEdgeInsets(top: .zero, left: .zero, bottom: MovieListView.tableViewInset, right: .zero)
 
         setObserver()
+        setSearchBarObserver()
     }
 
     private func setUpNavigationBar() {
@@ -69,7 +70,7 @@ final class MovieListViewController: UIViewController {
     private func openSortActionSheet() {
         let actionSheet = alertFactory
             .createActionSheet(sortUIModels: viewModel.getSortList()) { [weak self] in self?.viewModel.changeSort(sortUIModel: $0)
-                self?.contentView.moviesTableView.setContentOffset(.zero, animated: true)
+                self?.contentView.scrollToTop()
             }
         present(actionSheet, animated: true)
     }
@@ -77,6 +78,11 @@ final class MovieListViewController: UIViewController {
     private func setObserver() {
         contentView.moviesTableView.dataSource = nil
         viewModel.observeMovies()
+            .do(onNext: {  [weak self] uiModels in
+                uiModels.isEmpty
+                ? self?.contentView.showNoResultsPlaceholder()
+                : self?.contentView.hideNoResultsPlaceholder()
+            })
             .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
                 self.dequeueMovieCell(tableView: tableView, at: index, with: item)
@@ -110,6 +116,18 @@ final class MovieListViewController: UIViewController {
         return cell
     }
 
+    private func setSearchBarObserver() {
+        contentView.searchBarView.rx.text.orEmpty.changed
+            .distinctUntilChanged()
+            .debounce(
+                .milliseconds(500),
+                scheduler: ConcurrentDispatchQueueScheduler(qos: .utility)
+            )
+            .bind(onNext: { query in
+                self.viewModel.searchMovie(for: query)
+            })
+            .disposed(by: disposeBag)
+    }
 }
 
 extension MovieListViewController: UITableViewDelegate {
@@ -119,6 +137,7 @@ extension MovieListViewController: UITableViewDelegate {
     }
 
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        contentView.hideKeyboard()
         guard scrollView.contentSize.height > 0,
               scrollView.bounds.size.height > 0 else { return }
         if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.bounds.size.height)) {

@@ -23,19 +23,27 @@ final class MoviePaginationRepository {
         defaultParams = Parameters(dictionaryLiteral: ("api_key", apiKey), ("page", 1))
     }
 
-    func getPagination(for sort: MovieSortType) -> Pagination<MovieResponse> {
-        moviesPagination[sort.rawValue] ?? createPagination(for: sort)
+    func getPagination(for request: MovieRequestType) -> Pagination<MovieResponse> {
+        moviesPagination[request.description] ?? createPagination(request: request)
     }
 
-    func loadNextPage(for sort: MovieSortType) {
-        moviesPagination[sort.rawValue]?.loadNextPage()
+    func loadNextPage(for request: MovieRequestType) {
+        moviesPagination[request.description]?.loadNextPage()
     }
 
-    private func createPagination(for sort: MovieSortType) -> Pagination<MovieResponse> {
+    private func createPagination(request: MovieRequestType) -> Pagination<MovieResponse> {
         var params = defaultParams
-        params.updateValue(sort.rawValue, forKey: "sort_by")
-        let pagination = paginationFactory.create(urlString: "https://api.themoviedb.org/3/discover/movie", requestParams: params)
-        moviesPagination[sort.rawValue] = pagination
+        let pagination: Pagination<MovieResponse>
+        switch request {
+        case .discover(let sort):
+            params.updateValue(sort.rawValue, forKey: "sort_by")
+            pagination = paginationFactory.create(urlString: "https://api.themoviedb.org/3/discover/movie", requestParams: params)
+            
+        case .search(let query):
+            params.updateValue(query, forKey: "query")
+            pagination = paginationFactory.create(urlString: "https://api.themoviedb.org/3/search/movie", requestParams: params)
+        }
+        moviesPagination[request.description] = pagination
         return pagination
     }
 }
