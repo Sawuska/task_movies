@@ -46,6 +46,7 @@ final class MovieListViewController: UIViewController {
         contentView.moviesTableView.rx.setDelegate(self)
             .disposed(by: disposeBag)
         contentView.moviesTableView.contentInset = UIEdgeInsets(top: .zero, left: .zero, bottom: MovieListView.tableViewInset, right: .zero)
+        setUpRefreshControl()
 
         setObserver()
         setSearchBarObserver()
@@ -75,13 +76,21 @@ final class MovieListViewController: UIViewController {
         present(actionSheet, animated: true)
     }
 
+    private func setUpRefreshControl() {
+        contentView.refreshControl.addTarget(self, action: #selector(tableViewPullToRefresh), for: .valueChanged)
+    }
+
+    @objc
+    private func tableViewPullToRefresh() {
+        viewModel.refresh()
+    }
+
     private func setObserver() {
         contentView.moviesTableView.dataSource = nil
         viewModel.observeMovies()
+            .observe(on: MainScheduler.instance)
             .do(onNext: {  [weak self] uiModels in
-                uiModels.isEmpty
-                ? self?.contentView.showNoResultsPlaceholder()
-                : self?.contentView.hideNoResultsPlaceholder()
+                self?.updateViewsVisibility(resultIsEmpty: uiModels.isEmpty)
             })
             .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
@@ -114,6 +123,14 @@ final class MovieListViewController: UIViewController {
         }
         cell.updateInfo(for: item)
         return cell
+    }
+
+    private func updateViewsVisibility(resultIsEmpty: Bool) {
+        resultIsEmpty
+        ? contentView.showNoResultsPlaceholder()
+        : contentView.hideNoResultsPlaceholder()
+
+        contentView.refreshControl.endRefreshing()
     }
 
     private func setSearchBarObserver() {

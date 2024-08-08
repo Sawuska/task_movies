@@ -79,6 +79,13 @@ final class Pagination<T: Decodable> {
         pageSubject.on(.next(currentPage))
     }
 
+    func refresh() {
+        guard !readIsPageRefreshing() else { return }
+        currentPage = minPage
+        writeIsPageRefreshing(value: true)
+        pageSubject.on(.next(currentPage))
+    }
+
     private func loadFromNetwork(page: Int = 0) -> Single<T?> {
         var params = requestParams
         params.updateValue(page, forKey: "page")
