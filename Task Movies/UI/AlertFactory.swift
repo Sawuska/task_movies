@@ -14,9 +14,11 @@ final class AlertFactory {
         sortUIModels: [MovieSortTypeUIModel],
         onSelect: @escaping (MovieSortTypeUIModel) -> Void
     ) -> UIAlertController {
-        let actionSheetController = UIAlertController(title: "Sorting options", message: "Select how to sort the movies", preferredStyle: .actionSheet)
+        let title = String(localized: "Sorting options")
+        let message = String(localized: "Select how to sort the movies")
+        let actionSheetController = UIAlertController(title: title, message: message, preferredStyle: .actionSheet)
 
-        let cancelActionButton = UIAlertAction(title: "Cancel", style: .cancel) { _ in
+        let cancelActionButton = UIAlertAction(title: String(localized: "Cancel"), style: .cancel) { _ in
             actionSheetController.dismiss(animated: true)
         }
         actionSheetController.addAction(cancelActionButton)
@@ -36,8 +38,8 @@ final class AlertFactory {
     }
 
     func createNoInternetAlert() -> UIAlertController {
-        let alertController = UIAlertController(title: "Error", message: "You are offline. Please, enable your Wi-Fi or connect using cellular data.", preferredStyle: .alert)
-        let action = UIAlertAction(title: "Ok", style: .cancel) { _ in
+        let alertController = UIAlertController(title: String(localized: "Error"), message: String(localized: "You are offline. Please, enable your Wi-Fi or connect using cellular data."), preferredStyle: .alert)
+        let action = UIAlertAction(title: String(localized: "Ok"), style: .cancel) { _ in
             alertController.dismiss(animated: true)
         }
         alertController.addAction(action)

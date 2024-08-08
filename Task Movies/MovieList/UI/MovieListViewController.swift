@@ -53,7 +53,7 @@ final class MovieListViewController: UIViewController {
     }
 
     private func setUpNavigationBar() {
-        navigationItem.title = "Popular Movies"
+        navigationItem.title = String(localized: "Popular Movies")
         let button = UIBarButtonItem(
             image: UIImage(systemName: "line.3.horizontal.decrease.circle"),
             style: .plain,

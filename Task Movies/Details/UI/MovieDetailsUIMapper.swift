@@ -14,7 +14,7 @@ final class MovieDetailsUIMapper {
         let countries = ListFormatter.localizedString(byJoining: details?.originCountry ?? [])
         let separator = !countries.isEmpty && !year.isEmpty ? ", " : ""
         let countryAndYear = countries + separator + year
-        let rating = details.map { "Rating: " + String($0.voteAverage) } ?? ""
+        let rating = details.map { String(localized: "Rating: ") + String($0.voteAverage) } ?? ""
         let genres = genreMapper.mapGenresToString(genres: details?.genres ?? [])
         let posterURL = details?.posterPath.flatMap { URL(string: "https://image.tmdb.org/t/p/w500" + $0) }
         let shouldEnableImageInteraction = posterURL != nil
