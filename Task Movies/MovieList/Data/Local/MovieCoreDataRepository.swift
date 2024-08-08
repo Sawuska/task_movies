@@ -65,9 +65,9 @@ final class MovieCoreDataRepository {
             movieEntity.sort = request.description
             movieEntity.showOrder = Int64(page * limit + i)
             movieEntity.releaseDate = movie.releaseDate
-            movieEntity.rating = movie.voteAverage
+            movieEntity.rating = movie.voteAverage ?? .zero
             movieEntity.posterPath = movie.posterPath
-            movieEntity.genres = genreMapper.mapToString(ids: movie.genreIds, from: genres)
+            movieEntity.genres = genreMapper.mapToString(ids: movie.genreIds ?? [], from: genres)
         }
         do {
             try managedObjContext.save()

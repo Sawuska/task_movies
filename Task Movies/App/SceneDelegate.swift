@@ -16,6 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: scene)
         let managedObjContext = AppDelegate().persistentContainer.viewContext
         let apiKey = "3fd5e68de77c9877441e0d99f37857e5"
+        let language = getLanguage()
         let mainVC = MovieListViewController(
             viewModel: MovieListViewModel(
                 movieRepository: MovieRepository(
@@ -26,11 +27,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                         paginationFactory: PaginationFactory<MovieResponse>(
                             networkService: NetworkService<MovieResponse>(
                                 jsonMapper: JSONMapper<MovieResponse>())), 
-                        apiKey: apiKey), 
+                        apiKey: apiKey, 
+                        language: language),
                     remoteGenreRepository: RemoteGenreRepository(
                         networkService: NetworkService<GenreResponse>(
                             jsonMapper: JSONMapper<GenreResponse>()),
-                        apiKey: apiKey),
+                        apiKey: apiKey, 
+                        language: language),
                     networkMonitor: NetworkMonitor()),
                 uiMovieMapper: MovieUIMapper(), 
                 uiSortTypeMapper: MovieSortTypeUIMapper()), 
@@ -42,7 +45,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                     videosNetworkService: NetworkService<MovieVideosResponse>(
                         jsonMapper: JSONMapper<MovieVideosResponse>()),
                     trailerMapper: TrailerMapper(),
-                    apiKey: apiKey),
+                    apiKey: apiKey, 
+                    language: language),
                 detailsMapper: MovieDetailsUIMapper(),
                 genreMapper: GenreMapper()),
             alertFactory: AlertFactory())
@@ -52,6 +56,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window.makeKeyAndVisible()
     }
 
+    private func getLanguage() -> String {
+        Bundle.main.preferredLocalizations[0]
+    }
 
 }
 

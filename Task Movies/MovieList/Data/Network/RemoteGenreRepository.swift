@@ -12,17 +12,17 @@ import Alamofire
 final class RemoteGenreRepository {
 
     private let networkService: NetworkService<GenreResponse>
-    private let apiKey: String
+    private let defaultParams: Parameters
 
-    init(networkService: NetworkService<GenreResponse>, apiKey: String) {
+    init(networkService: NetworkService<GenreResponse>, apiKey: String, language: String) {
         self.networkService = networkService
-        self.apiKey = apiKey
+        defaultParams = Parameters(dictionaryLiteral: ("api_key", apiKey), ("language", language))
     }
 
     func loadGenres() -> Single<[Genre]> {
         networkService.fetchData(
             urlString: "https://api.themoviedb.org/3/genre/movie/list",
-            parameters: Parameters(dictionaryLiteral: ("api_key", apiKey)))
+            parameters: defaultParams)
         .map { response in
             response?.genres ?? []
         }

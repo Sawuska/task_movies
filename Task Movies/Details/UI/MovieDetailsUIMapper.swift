@@ -10,11 +10,11 @@ import Foundation
 final class MovieDetailsUIMapper {
 
     func mapDetailsToUI(details: MovieDetails?, trailer: MovieTrailer?, genreMapper: GenreMapper) -> MovieDetailsUIModel {
-        let year = details?.releaseDate.prefix(4) ?? ""
+        let year = details?.releaseDate?.prefix(4) ?? ""
         let countries = ListFormatter.localizedString(byJoining: details?.originCountry ?? [])
         let separator = !countries.isEmpty && !year.isEmpty ? ", " : ""
         let countryAndYear = countries + separator + year
-        let rating = details.map { String(localized: "Rating: ") + String($0.voteAverage) } ?? ""
+        let rating = details?.voteAverage.map { String(localized: "Rating: ") + String($0) } ?? ""
         let genres = genreMapper.mapGenresToString(genres: details?.genres ?? [])
         let posterURL = details?.posterPath.flatMap { URL(string: "https://image.tmdb.org/t/p/w500" + $0) }
         let shouldEnableImageInteraction = posterURL != nil
