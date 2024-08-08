@@ -36,6 +36,10 @@ final class MovieListViewModel {
         movieRepository.loadNextPage()
     }
 
+    func refresh() {
+        movieRepository.refresh()
+    }
+
     func changeSort(sortUIModel: MovieSortTypeUIModel) {
         guard let sort = uiSortTypeMapper.mapUIToSortType(uiModel: sortUIModel) else { return }
         movieRepository.changeSort(to: sort)

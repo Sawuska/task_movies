@@ -36,6 +36,8 @@ final class MovieListView: UIView {
         return view
     }()
 
+    let refreshControl = UIRefreshControl()
+
     private let placeholder: UILabel = {
         @UseAutoLayout var view = UILabel(withSystemFontOfSize: 24)
         view.text = "Nothing found"
@@ -43,6 +45,7 @@ final class MovieListView: UIView {
         view.textColor = .darkGray
         view.numberOfLines = 3
         view.textAlignment = .center
+        view.isHidden = true
         return view
     }()
 
@@ -62,6 +65,7 @@ final class MovieListView: UIView {
         [mainStackView, loadingView, placeholder].forEach(addSubview)
         backgroundColor = .systemBackground
         useAutoLayout()
+        moviesTableView.refreshControl = refreshControl
     }
 
     required init?(coder: NSCoder) {

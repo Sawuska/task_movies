@@ -31,6 +31,10 @@ final class MoviePaginationRepository {
         moviesPagination[request.description]?.loadNextPage()
     }
 
+    func refresh(for request: MovieRequestType) {
+        moviesPagination[request.description]?.refresh()
+    }
+
     private func createPagination(request: MovieRequestType) -> Pagination<MovieResponse> {
         var params = defaultParams
         let pagination: Pagination<MovieResponse>

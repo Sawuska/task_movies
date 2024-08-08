@@ -69,6 +69,12 @@ final class MovieRepository {
         paginationRepository.loadNextPage(for: request)
     }
 
+    func refresh() {
+        guard let request = try? requestSubject.value() else { return }
+        coreDataRepository.clearCachedMovies(for: request)
+        paginationRepository.refresh(for: request)
+    }
+
     func changeSort(to sort: MovieSortType) {
         requestSubject.onNext(.discover(sort: sort))
     }
