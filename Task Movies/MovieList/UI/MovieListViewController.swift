@@ -78,6 +78,11 @@ final class MovieListViewController: UIViewController {
     private func setObserver() {
         contentView.moviesTableView.dataSource = nil
         viewModel.observeMovies()
+            .do(onNext: {  [weak self] uiModels in
+                uiModels.isEmpty
+                ? self?.contentView.showNoResultsPlaceholder()
+                : self?.contentView.hideNoResultsPlaceholder()
+            })
             .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
                 self.dequeueMovieCell(tableView: tableView, at: index, with: item)

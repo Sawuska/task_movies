@@ -36,6 +36,16 @@ final class MovieListView: UIView {
         return view
     }()
 
+    private let placeholder: UILabel = {
+        @UseAutoLayout var view = UILabel(withSystemFontOfSize: 24)
+        view.text = "Nothing found"
+        view.backgroundColor = .clear
+        view.textColor = .darkGray
+        view.numberOfLines = 3
+        view.textAlignment = .center
+        return view
+    }()
+
     private lazy var mainStackView: UIStackView = {
         let stackView = UIStackView(
             arrangedSubviews: [searchBarView, moviesTableView])
@@ -49,8 +59,7 @@ final class MovieListView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        addSubview(mainStackView)
-        addSubview(loadingView)
+        [mainStackView, loadingView, placeholder].forEach(addSubview)
         backgroundColor = .systemBackground
         useAutoLayout()
     }
@@ -68,7 +77,13 @@ final class MovieListView: UIView {
             mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+
             searchBarView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: MovieListView.searchHeightToViewHeight),
+
+            placeholder.topAnchor.constraint(equalTo: moviesTableView.topAnchor),
+            placeholder.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
+            placeholder.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
+            placeholder.heightAnchor.constraint(equalTo: moviesTableView.heightAnchor, multiplier: 0.5),
         ])
 
         NSLayoutConstraint.constraintFrameToMatchParent(child: loadingView, parent: moviesTableView)
@@ -92,5 +107,13 @@ final class MovieListView: UIView {
         if searchBarView.isFirstResponder {
             searchBarView.endEditing(true)
         }
+    }
+
+    func showNoResultsPlaceholder() {
+        placeholder.isHidden = false
+    }
+
+    func hideNoResultsPlaceholder() {
+        placeholder.isHidden = true
     }
 }
