@@ -84,6 +84,7 @@ final class MovieDetailsView: UIView {
         @UseAutoLayout var view = UIScrollView()
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
+        view.isScrollEnabled = true
         return view
     }()
 
@@ -108,7 +109,7 @@ final class MovieDetailsView: UIView {
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            scrollView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             poster.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             poster.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
@@ -136,7 +137,8 @@ final class MovieDetailsView: UIView {
 
             overview.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             overview.trailingAnchor.constraint(equalTo: title.trailingAnchor),
-            overview.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: MovieDetailsView.verticalInset)
+            overview.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: MovieDetailsView.verticalInset),
+            overview.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
 
     }
