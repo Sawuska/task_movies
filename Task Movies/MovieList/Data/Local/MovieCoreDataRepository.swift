@@ -51,7 +51,7 @@ final class MovieCoreDataRepository {
 
     func cacheMovies(for request: MovieRequestType, movies: [Movie], genres: [Genre], page: Int) {
         if page == 1 {
-            clearMoviesFromOtherRequests(request: request)
+            clearMovies()
         }
         guard let movieEntityDescription =
             NSEntityDescription.entity(forEntityName: "MovieEntity",
@@ -107,15 +107,13 @@ final class MovieCoreDataRepository {
         }
     }
 
-    private func clearMoviesFromOtherRequests(request: MovieRequestType) {
+    private func clearMovies() {
         let entityDescription = NSEntityDescription.entity(
             forEntityName: "MovieEntity",
             in: managedObjContext)
         let fetchRequest = MovieEntity.fetchRequest()
         fetchRequest.entity = entityDescription
 
-        let predicate = NSPredicate(format: "sort != %@", request.description)
-        fetchRequest.predicate = predicate
         do {
             let results = try self.managedObjContext.fetch(fetchRequest)
             results.forEach { managedObjContext.delete($0) }
