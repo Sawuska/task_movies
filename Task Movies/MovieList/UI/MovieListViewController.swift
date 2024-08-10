@@ -89,9 +89,13 @@ final class MovieListViewController: UIViewController {
         contentView.moviesTableView.dataSource = nil
         viewModel.observeMovies()
             .observe(on: MainScheduler.instance)
-            .do(onNext: {  [weak self] uiModels in
-                self?.updateViewsVisibility(resultIsEmpty: uiModels.isEmpty)
-            })
+            .do(
+                onNext: { [weak self] uiModels in
+                    self?.contentView.updateVisibilityOnResult(resultIsEmpty: uiModels.isEmpty)
+                },
+                onSubscribe: { [weak self] in
+                    self?.contentView.updateVisibilityOnSubscribe()
+                })
             .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
                 self.dequeueMovieCell(tableView: tableView, at: index, with: item)
@@ -125,17 +129,13 @@ final class MovieListViewController: UIViewController {
         return cell
     }
 
-    private func updateViewsVisibility(resultIsEmpty: Bool) {
-        resultIsEmpty
-        ? contentView.showNoResultsPlaceholder()
-        : contentView.hideNoResultsPlaceholder()
-
-        contentView.refreshControl.endRefreshing()
-    }
-
     private func setSearchBarObserver() {
         contentView.searchBarView.rx.text.orEmpty.changed
             .distinctUntilChanged()
+            .subscribe(on: MainScheduler.instance)
+            .do(onNext: { _ in
+                self.contentView.updateVisibilityOnSubscribe()
+            })
             .debounce(
                 .milliseconds(500),
                 scheduler: ConcurrentDispatchQueueScheduler(qos: .utility)

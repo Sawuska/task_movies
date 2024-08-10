@@ -85,28 +85,6 @@ final class MovieCoreDataRepository {
         }
     }
 
-    func clearCachedMovies(for request: MovieRequestType) {
-        let entityDescription = NSEntityDescription.entity(
-            forEntityName: "MovieEntity",
-            in: managedObjContext)
-        let fetchRequest = MovieEntity.fetchRequest()
-        fetchRequest.entity = entityDescription
-
-        let predicate = NSPredicate(format: "sort == %@", request.description)
-        fetchRequest.predicate = predicate
-        do {
-            let results = try self.managedObjContext.fetch(fetchRequest)
-            results.forEach { managedObjContext.delete($0) }
-        } catch let error {
-            print(error.localizedDescription)
-        }
-        do {
-            try managedObjContext.save()
-        } catch let error {
-            print(error.localizedDescription)
-        }
-    }
-
     private func clearMovies() {
         let entityDescription = NSEntityDescription.entity(
             forEntityName: "MovieEntity",
