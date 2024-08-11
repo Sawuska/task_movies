@@ -14,7 +14,7 @@ final class MovieListView: UIView {
 
     private let loadingView: UIActivityIndicatorView = {
         @UseAutoLayout var view = UIActivityIndicatorView(style: .large)
-        view.backgroundColor = .clear
+        view.backgroundColor = .systemBackground
         view.hidesWhenStopped = true
         return view
     }()
@@ -62,7 +62,7 @@ final class MovieListView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        [mainStackView, loadingView, placeholder].forEach(addSubview)
+        [placeholder, loadingView, mainStackView].forEach(addSubview)
         backgroundColor = .systemBackground
         useAutoLayout()
         moviesTableView.refreshControl = refreshControl
@@ -119,5 +119,18 @@ final class MovieListView: UIView {
 
     func hideNoResultsPlaceholder() {
         placeholder.isHidden = true
+    }
+
+    func updateVisibilityOnResult(resultIsEmpty: Bool) {
+        stopLoadingIndicator()
+
+        resultIsEmpty ? showNoResultsPlaceholder() : hideNoResultsPlaceholder()
+
+        refreshControl.endRefreshing()
+    }
+
+    func updateVisibilityOnSubscribe() {
+        hideNoResultsPlaceholder()
+        startLoadingIndicator()
     }
 }

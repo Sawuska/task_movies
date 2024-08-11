@@ -71,7 +71,6 @@ final class MovieRepository {
 
     func refresh() {
         guard let request = try? requestSubject.value() else { return }
-        coreDataRepository.clearCachedMovies(for: request)
         paginationRepository.refresh(for: request)
     }
 

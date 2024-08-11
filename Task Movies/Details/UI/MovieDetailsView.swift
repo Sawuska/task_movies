@@ -84,13 +84,22 @@ final class MovieDetailsView: UIView {
         @UseAutoLayout var view = UIScrollView()
         view.showsVerticalScrollIndicator = false
         view.showsHorizontalScrollIndicator = false
+        view.isScrollEnabled = true
+        return view
+    }()
+
+    private let loadingView: UIActivityIndicatorView = {
+        @UseAutoLayout var view = UIActivityIndicatorView(style: .large)
+        view.backgroundColor = .systemBackground
+        view.hidesWhenStopped = true
+        view.startAnimating()
         return view
     }()
 
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(scrollView)
-        [poster, title, countryAndYear, genres, horizontalStackView, overview].forEach(scrollView.addSubview)
+        [poster, title, countryAndYear, genres, horizontalStackView, overview, loadingView].forEach(scrollView.addSubview)
         backgroundColor = .systemBackground
         useAutoLayout()
     }
@@ -103,12 +112,13 @@ final class MovieDetailsView: UIView {
         super.layoutSubviews()
 
         NSLayoutConstraint.constraintFrameToMatchParent(child: self, parent: superview)
+        NSLayoutConstraint.constraintFrameToMatchParent(child: loadingView, parent: self)
 
         NSLayoutConstraint.activate([
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
             scrollView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            scrollView.heightAnchor.constraint(equalTo: safeAreaLayoutGuide.heightAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             poster.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             poster.widthAnchor.constraint(equalTo: safeAreaLayoutGuide.widthAnchor),
@@ -136,7 +146,8 @@ final class MovieDetailsView: UIView {
 
             overview.leadingAnchor.constraint(equalTo: title.leadingAnchor),
             overview.trailingAnchor.constraint(equalTo: title.trailingAnchor),
-            overview.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: MovieDetailsView.verticalInset)
+            overview.topAnchor.constraint(equalTo: horizontalStackView.bottomAnchor, constant: MovieDetailsView.verticalInset),
+            overview.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
 
     }
@@ -155,6 +166,13 @@ final class MovieDetailsView: UIView {
             placeholder: UIColor.lightGray,
             options: [.transition(.fade(0.2))]
         )
+
+        stopLoadingIndicator()
+    }
+
+    private func stopLoadingIndicator() {
+        loadingView.stopAnimating()
+        loadingView.isHidden = true
     }
 
 }
