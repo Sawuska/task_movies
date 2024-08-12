@@ -38,13 +38,13 @@ final class DetailsRepository {
 
     private func loadInfo(for movieId: Int) -> Single<MovieDetails?> {
         detailsNetworkService.fetchData(
-            urlString: "https://api.themoviedb.org/3/movie/\(String(movieId))",
+            urlString: APIURL.url + "movie/\(String(movieId))",
             parameters: defaultParams)
     }
 
     private func loadTrailer(for movieId: Int) -> Single<MovieTrailer?> {
         videosNetworkService.fetchData(
-            urlString: "https://api.themoviedb.org/3/movie/\(String(movieId))/videos",
+            urlString: APIURL.url + "movie/\(String(movieId))/videos",
             parameters: defaultParams)
         .map { response in
             self.trailerMapper.mapFromResponse(response: response)

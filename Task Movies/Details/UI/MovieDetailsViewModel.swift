@@ -12,23 +12,30 @@ final class MovieDetailsViewModel {
 
     private let repository: DetailsRepository
     private let detailsMapper: MovieDetailsUIMapper
-    private let genreMapper: GenreMapper
+    private let movieID: Int
+
+    var posterURL: URL?
+    var trailerURL: URL?
 
     init(
         repository: DetailsRepository,
         detailsMapper: MovieDetailsUIMapper,
-        genreMapper: GenreMapper
+        movieID: Int
     ) {
         self.repository = repository
         self.detailsMapper = detailsMapper
-        self.genreMapper = genreMapper
+        self.movieID = movieID
     }
 
-    func loadDetails(id: Int) -> Single<MovieDetailsUIModel> {
-        repository.loadDetails(for: id)
+    func loadDetails() -> Single<MovieDetailsUIModel> {
+        repository.loadDetails(for: movieID)
             .map { (details, trailer) in
                 self.detailsMapper
-                    .mapDetailsToUI(details: details, trailer: trailer, genreMapper: self.genreMapper)
+                    .mapDetailsToUI(details: details, trailer: trailer)
+            }
+            .do { uiModel in
+                self.posterURL = uiModel.posterURL
+                self.trailerURL = uiModel.trailerURL
             }
     }
 }

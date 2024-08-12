@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum MovieRequestType {
+enum MovieRequestType: Equatable {
 
     case discover(sort: MovieSortType)
     case search(query: String)

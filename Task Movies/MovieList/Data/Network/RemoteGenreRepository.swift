@@ -21,7 +21,7 @@ final class RemoteGenreRepository {
 
     func loadGenres() -> Single<[Genre]> {
         networkService.fetchData(
-            urlString: "https://api.themoviedb.org/3/genre/movie/list",
+            urlString: APIURL.url + "genre/movie/list",
             parameters: defaultParams)
         .map { response in
             response?.genres ?? []

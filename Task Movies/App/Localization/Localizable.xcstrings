@@ -166,6 +166,28 @@
         }
       }
     },
+    "Title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Назва"
+          }
+        }
+      }
+    },
+    "year" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "рік"
+          }
+        }
+      }
+    },
     "You are offline. Please, enable your Wi-Fi or connect using cellular data." : {
       "extractionState" : "manual",
       "localizations" : {

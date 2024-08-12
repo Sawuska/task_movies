@@ -80,7 +80,7 @@ final class MovieListView: UIView {
             mainStackView.leadingAnchor.constraint(equalTo: safeAreaLayoutGuide.leadingAnchor),
             mainStackView.trailingAnchor.constraint(equalTo: safeAreaLayoutGuide.trailingAnchor),
             mainStackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            mainStackView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor),
+            mainStackView.bottomAnchor.constraint(equalTo: bottomAnchor),
 
             searchBarView.heightAnchor.constraint(equalTo: heightAnchor, multiplier: MovieListView.searchHeightToViewHeight),
 
@@ -122,15 +122,12 @@ final class MovieListView: UIView {
     }
 
     func updateVisibilityOnResult(resultIsEmpty: Bool) {
-        stopLoadingIndicator()
-
         resultIsEmpty ? showNoResultsPlaceholder() : hideNoResultsPlaceholder()
 
         refreshControl.endRefreshing()
     }
 
-    func updateVisibilityOnSubscribe() {
-        hideNoResultsPlaceholder()
-        startLoadingIndicator()
+    func updateLoadingVisibility(isLoading: Bool) {
+        isLoading ? startLoadingIndicator() : stopLoadingIndicator()
     }
 }

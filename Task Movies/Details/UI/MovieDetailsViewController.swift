@@ -11,17 +11,15 @@ import AVKit
 
 final class MovieDetailsViewController: UIViewController {
 
-    let contentView = MovieDetailsView()
+    private let contentView = MovieDetailsView()
 
     private let disposeBag = DisposeBag()
     private let viewModel: MovieDetailsViewModel
-    private let movieId: Int
-    private var posterURL: URL?
-    private var trailerURL: URL?
+    private let router: Router
 
-    init(movieId: Int, viewModel: MovieDetailsViewModel) {
-        self.movieId = movieId
+    init(viewModel: MovieDetailsViewModel, router: Router) {
         self.viewModel = viewModel
+        self.router = router
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -46,12 +44,10 @@ final class MovieDetailsViewController: UIViewController {
     }
 
     private func loadDetails() {
-        viewModel.loadDetails(id: movieId)
+        viewModel.loadDetails()
             .subscribe { uiModel in
                 self.navigationItem.title = uiModel.title
                 self.contentView.updateInfo(for: uiModel)
-                self.posterURL = uiModel.posterURL
-                self.trailerURL = uiModel.trailerURL
             }
             .disposed(by: disposeBag)
     }
@@ -64,7 +60,7 @@ final class MovieDetailsViewController: UIViewController {
 
     @objc
     private func backButtonTap() {
-        navigationController?.popViewController(animated: true)
+        router.navigateBack()
     }
 
     private func setImageViewTap() {
@@ -74,8 +70,7 @@ final class MovieDetailsViewController: UIViewController {
 
     @objc
     private func imageViewTap() {
-        let posterVC = PosterViewController(posterURL: posterURL)
-        present(posterVC, animated: true)
+        router.navigateToPoster(url: viewModel.posterURL)
     }
 
     private func setTrailerButtonTap() {
@@ -84,9 +79,7 @@ final class MovieDetailsViewController: UIViewController {
 
     @objc
     private func trailerButtonTap() {
-        guard let url = trailerURL else { return }
-        let playerVC = WebVideoViewController(trailerUrl: url)
-        present(playerVC, animated: true)
+        router.navigateToTrailer(url: viewModel.trailerURL)
     }
 
 }

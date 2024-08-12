@@ -12,7 +12,7 @@ import Alamofire
 final class MoviePaginationRepository {
 
     private let paginationFactory: PaginationFactory<MovieResponse>
-    private var moviesPagination: [String: Pagination<MovieResponse>] = [:]
+    private var currentPaginationWithRequest: (request: MovieRequestType, pagination: Pagination<MovieResponse>)?
 
     private let defaultParams: Parameters
 
@@ -24,15 +24,23 @@ final class MoviePaginationRepository {
     }
 
     func getPagination(for request: MovieRequestType) -> Pagination<MovieResponse> {
-        moviesPagination[request.description] ?? createPagination(request: request)
+        let pagination: Pagination<MovieResponse>
+        if let currentPaginationWithRequest = currentPaginationWithRequest,
+           currentPaginationWithRequest.request == request {
+            pagination = currentPaginationWithRequest.pagination
+        } else {
+            pagination = createPagination(request: request)
+            currentPaginationWithRequest = (request, pagination)
+        }
+        return pagination
     }
 
     func loadNextPage(for request: MovieRequestType) {
-        moviesPagination[request.description]?.loadNextPage()
+        getPagination(for: request).loadNextPage()
     }
 
     func refresh(for request: MovieRequestType) {
-        moviesPagination[request.description]?.refresh()
+        getPagination(for: request).refresh()
     }
 
     private func createPagination(request: MovieRequestType) -> Pagination<MovieResponse> {
@@ -41,13 +49,12 @@ final class MoviePaginationRepository {
         switch request {
         case .discover(let sort):
             params.updateValue(sort.rawValue, forKey: "sort_by")
-            pagination = paginationFactory.create(urlString: "https://api.themoviedb.org/3/discover/movie", requestParams: params)
-            
+            pagination = paginationFactory.create(urlString: APIURL.url + "discover/movie", requestParams: params)
+
         case .search(let query):
             params.updateValue(query, forKey: "query")
-            pagination = paginationFactory.create(urlString: "https://api.themoviedb.org/3/search/movie", requestParams: params)
+            pagination = paginationFactory.create(urlString: APIURL.url + "search/movie", requestParams: params)
         }
-        moviesPagination[request.description] = pagination
         return pagination
     }
 }

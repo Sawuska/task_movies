@@ -11,21 +11,18 @@ import RxCocoa
 
 final class MovieListViewController: UIViewController {
 
-    let contentView = MovieListView()
+    private let contentView = MovieListView()
 
     private let viewModel: MovieListViewModel
-    private let detailsViewModel: MovieDetailsViewModel
-    private let alertFactory: AlertFactory
+    private let router: Router
     private let disposeBag = DisposeBag()
 
     init(
         viewModel: MovieListViewModel,
-        detailsViewModel: MovieDetailsViewModel,
-        alertFactory: AlertFactory
+        router: Router
     ) {
         self.viewModel = viewModel
-        self.detailsViewModel = detailsViewModel
-        self.alertFactory = alertFactory
+        self.router = router
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -50,6 +47,7 @@ final class MovieListViewController: UIViewController {
 
         setObserver()
         setSearchBarObserver()
+        setIsLoadingObserver()
     }
 
     private func setUpNavigationBar() {
@@ -65,15 +63,10 @@ final class MovieListViewController: UIViewController {
 
     @objc
     private func sortButtonTap() {
-        openSortActionSheet()
-    }
-
-    private func openSortActionSheet() {
-        let actionSheet = alertFactory
-            .createActionSheet(sortUIModels: viewModel.getSortList()) { [weak self] in self?.viewModel.changeSort(sortUIModel: $0)
-                self?.contentView.scrollToTop()
-            }
-        present(actionSheet, animated: true)
+        router.navigateToSorting(sortUIModels: viewModel.getSortList()) { [weak self] in
+            self?.viewModel.changeSort(sortUIModel: $0)
+            self?.contentView.scrollToTop()
+        }
     }
 
     private func setUpRefreshControl() {
@@ -88,15 +81,15 @@ final class MovieListViewController: UIViewController {
     private func setObserver() {
         contentView.moviesTableView.dataSource = nil
         viewModel.observeMovies()
-            .observe(on: MainScheduler.instance)
             .do(
-                onNext: { [weak self] uiModels in
-                    self?.contentView.updateVisibilityOnResult(resultIsEmpty: uiModels.isEmpty)
-                },
-                onSubscribe: { [weak self] in
-                    self?.contentView.updateVisibilityOnSubscribe()
-                })
-            .observe(on: SerialDispatchQueueScheduler(qos: .userInteractive))
+                onNext: { [weak self] listData in
+                    self?.contentView.updateVisibilityOnResult(resultIsEmpty: listData.movies.isEmpty)
+                    if !listData.isConnected {
+                        self?.router.showNoInternetAlert()
+                    }
+                }
+            )
+            .map { $0.movies }
             .bind(to: contentView.moviesTableView.rx.items) { tableView, index, item in
                 self.dequeueMovieCell(tableView: tableView, at: index, with: item)
             }
@@ -104,12 +97,8 @@ final class MovieListViewController: UIViewController {
 
         contentView.moviesTableView.rx.modelSelected(MovieUIModel.self)
             .subscribe { [weak self] event in
-                guard let viewModel = self?.detailsViewModel,
-                      let id = event.element?.id else { return }
-                let vc = MovieDetailsViewController(
-                    movieId: id,
-                    viewModel: viewModel)
-                self?.navigationController?.pushViewController(vc, animated: true)
+                guard let id = event.element?.id else { return }
+                self?.router.navigateToDetails(movieID: id)
             }
             .disposed(by: disposeBag)
     }
@@ -132,17 +121,25 @@ final class MovieListViewController: UIViewController {
     private func setSearchBarObserver() {
         contentView.searchBarView.rx.text.orEmpty.changed
             .distinctUntilChanged()
-            .subscribe(on: MainScheduler.instance)
             .do(onNext: { _ in
-                self.contentView.updateVisibilityOnSubscribe()
+                self.viewModel.loadingSubject.onNext(true)
             })
             .debounce(
                 .milliseconds(500),
                 scheduler: ConcurrentDispatchQueueScheduler(qos: .utility)
             )
-            .bind(onNext: { query in
-                self.viewModel.searchMovie(for: query)
+            .bind(onNext: { [weak self] query in
+                self?.viewModel.searchMovie(for: query)
             })
+            .disposed(by: disposeBag)
+    }
+
+    private func setIsLoadingObserver() {
+        viewModel.loadingSubject
+            .observe(on: MainScheduler.instance)
+            .subscribe { [weak self] shouldShowLoading in
+                self?.contentView.updateLoadingVisibility(isLoading: shouldShowLoading)
+            }
             .disposed(by: disposeBag)
     }
 }
@@ -157,7 +154,7 @@ extension MovieListViewController: UITableViewDelegate {
         contentView.hideKeyboard()
         guard scrollView.contentSize.height > 0,
               scrollView.bounds.size.height > 0 else { return }
-        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - scrollView.bounds.size.height)) {
+        if (scrollView.contentOffset.y >= (scrollView.contentSize.height - (scrollView.bounds.size.height * 3))) {
             viewModel.getNextPage()
         }
     }
