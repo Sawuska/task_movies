@@ -9,7 +9,13 @@ import Foundation
 
 final class MovieDetailsUIMapper {
 
-    func mapDetailsToUI(details: MovieDetails?, trailer: MovieTrailer?, genreMapper: GenreMapper) -> MovieDetailsUIModel {
+    private let genreMapper: GenreMapper
+
+    init(genreMapper: GenreMapper) {
+        self.genreMapper = genreMapper
+    }
+
+    func mapDetailsToUI(details: MovieDetails?, trailer: MovieTrailer?) -> MovieDetailsUIModel {
         let year = details?.releaseDate?.prefix(4) ?? ""
         let countries = ListFormatter.localizedString(byJoining: details?.originCountry ?? [])
         let separator = !countries.isEmpty && !year.isEmpty ? ", " : ""

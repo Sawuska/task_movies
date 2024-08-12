@@ -17,7 +17,7 @@ final class Pagination<T: Decodable> {
 
     private var currentPage = 0
     private let minPage: Int
-    private var isPageRefreshing = false
+    private var isPageLoading = true
     private var requestParams: Parameters
     private let networkService: NetworkService<T>
     private let urlString: String
@@ -36,15 +36,15 @@ final class Pagination<T: Decodable> {
         currentPage = minPage
     }
 
-    func readIsPageRefreshing() -> Bool {
+    private func readIsPageLoading() -> Bool {
         queue.sync {
-            return isPageRefreshing
+            return isPageLoading
         }
     }
 
-    func writeIsPageRefreshing(value: Bool) {
-        queue.async(flags: .barrier) {
-            self.isPageRefreshing = value
+    private func writeIsPageLoading(value: Bool) {
+        queue.sync {
+            self.isPageLoading = value
         }
     }
 
@@ -60,10 +60,10 @@ final class Pagination<T: Decodable> {
             }
         }
         .do { _ in
-            self.writeIsPageRefreshing(value: false)
+            self.writeIsPageLoading(value: false)
         }
         .do { error in
-            self.writeIsPageRefreshing(value: false)
+            self.writeIsPageLoading(value: false)
         }
     }
 
@@ -73,16 +73,15 @@ final class Pagination<T: Decodable> {
     }
 
     func loadNextPage() {
-        guard !readIsPageRefreshing() else { return }
+        guard !readIsPageLoading() else { return }
         currentPage += 1
-        writeIsPageRefreshing(value: true)
+        writeIsPageLoading(value: true)
         pageSubject.on(.next(currentPage))
     }
 
     func refresh() {
-        guard !readIsPageRefreshing() else { return }
         currentPage = minPage
-        writeIsPageRefreshing(value: true)
+        writeIsPageLoading(value: true)
         pageSubject.on(.next(currentPage))
     }
 
@@ -91,7 +90,7 @@ final class Pagination<T: Decodable> {
         params.updateValue(page, forKey: "page")
         return networkService.fetchData(urlString: urlString, parameters: params)
             .do(onError: { _ in
-                self.writeIsPageRefreshing(value: false)
+                self.writeIsPageLoading(value: false)
                 if self.currentPage > self.minPage {
                     self.currentPage -= 1
                 }

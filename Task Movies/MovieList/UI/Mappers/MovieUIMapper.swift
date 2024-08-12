@@ -11,8 +11,9 @@ final class MovieUIMapper {
 
     func mapEntitiesToUI(movies: [MovieEntity]) -> [MovieUIModel] {
         movies.map { entity in
-            let year = entity.releaseDate?.prefix(4) ?? "year"
-            let titleAndYear = (entity.title ?? "Title") + ", " + year
+            let year = entity.releaseDate?.prefix(4) ??
+            String.SubSequence(stringLiteral: String(localized: "year"))
+            let titleAndYear = (entity.title ?? String(localized: "Title")) + ", " + year
             let rating = String(entity.rating)
             let genres = entity.genres ?? ""
             let posterURL = URL(string: "https://image.tmdb.org/t/p/w500" + (entity.posterPath ?? ""))

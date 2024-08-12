@@ -11,6 +11,8 @@ import RxSwift
 
 final class MovieCoreDataRepository {
 
+    private static let movieEntityName = "MovieEntity"
+
     private let managedObjContext: NSManagedObjectContext
     private let genreMapper: GenreMapper
     private let limit: Int = 20
@@ -30,7 +32,7 @@ final class MovieCoreDataRepository {
 
     private func createMovieFetchRequest(for request: MovieRequestType, shouldSearchLocal: Bool) -> NSFetchRequest<MovieEntity>? {
         let entityDescription = NSEntityDescription.entity(
-            forEntityName: "MovieEntity",
+            forEntityName: MovieCoreDataRepository.movieEntityName,
             in: managedObjContext)
         let fetchRequest = MovieEntity.fetchRequest()
         fetchRequest.entity = entityDescription
@@ -54,7 +56,7 @@ final class MovieCoreDataRepository {
             clearMovies()
         }
         guard let movieEntityDescription =
-            NSEntityDescription.entity(forEntityName: "MovieEntity",
+                NSEntityDescription.entity(forEntityName: MovieCoreDataRepository.movieEntityName,
                                        in: managedObjContext) else { return }
         for (i, movie) in movies.enumerated() {
             let movieEntity = MovieEntity(
@@ -87,7 +89,7 @@ final class MovieCoreDataRepository {
 
     private func clearMovies() {
         let entityDescription = NSEntityDescription.entity(
-            forEntityName: "MovieEntity",
+            forEntityName: MovieCoreDataRepository.movieEntityName,
             in: managedObjContext)
         let fetchRequest = MovieEntity.fetchRequest()
         fetchRequest.entity = entityDescription
